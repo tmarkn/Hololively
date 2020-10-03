@@ -4,3 +4,4 @@ Flask-Cors==3.0.9
 python-dateutil==2.8.1
 pytz==2020.1
 requests==2.23.0
+gunicorn==20.0.4
