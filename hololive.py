@@ -50,5 +50,4 @@ def page_not_found(error):
     return render_template('404.html')
 
 if __name__ == '__main__':
-    # app.run(host= '0.0.0.0', debug)
-    app.run(threaded=True, port=5000)
+    app.run(host= '0.0.0.0', debug=True)

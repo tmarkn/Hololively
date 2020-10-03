@@ -1,2 +1,1 @@
-worker: python hololive.py
-heroku ps:scale web=1
+web: gunicorn hololive.py:app
