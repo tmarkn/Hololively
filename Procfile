@@ -1,1 +1,1 @@
-web: gunicorn hololive.py:app
+worker: python hololive.py
