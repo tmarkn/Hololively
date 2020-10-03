@@ -33,33 +33,23 @@ apiRequest.done(function (data) {
     // filter results
     let items = JSON.parse(data).content;
     let live = null;
-    // console.log(data);
-    console.log("hi");
-
-    
 
     // create objects
     items.forEach(item => {
         let day = new Date(Date.parse(item.date));
-        console.log(day);
-        console.log(day.getDay());
 
         let dayContainer = $("<div/>", {
             id: days[day.getDay()].substring(0, 3),
             class: "dayContainer",
         });
-        console.log("p1");
         dayContainer.appendTo("#calendarContainer");
-        console.log("p2");
         let dayHeader = $("<h1/>", {
             class: "dayHeader",
             text: (day.getMonth()+1) + "/" + day.getDate() + '\n' + days[day.getDay()],
         }).appendTo(dayContainer);
         dayHeader.html(dayHeader.html().replace(/\n/g, '<br/>'));
 
-        console.log(item["streams"].toString());
         item.streams.forEach(stream => {
-            console.log(stream.link);
             let streamContainer = $("<div/>", {
                 id: stream.link,
                 class: "streamContainer",
@@ -114,14 +104,12 @@ apiRequest.done(function (data) {
     });
 
     if (live) {
-        setTimeout(function() {
+        waitForElement(live, function () {
             $('html, body').animate({
                 scrollTop: live.offset().top - 120
             }, 1000, "swing");
-        }, 300);
+        });
     }
-
-    $("#calendarContainer").hide().fadeIn('fast');
 });
 
 // fetch failed
@@ -130,9 +118,19 @@ apiRequest.fail(function (a, b) {
 });
 
 function swap(dict) {
-var reverse = {};
-for (var key in dict) {
-    reverse[dict[key]] = key;
+    var reverse = {};
+    for (var key in dict) {
+        reverse[dict[key]] = key;
+    }
+    return reverse;
 }
-return reverse;
+
+function waitForElement(elementPath, callBack){
+    window.setTimeout(function(){
+      if($(elementPath).length){
+        callBack(elementPath, $(elementPath));
+      }else{
+        waitForElement(elementPath, callBack);
+      }
+    }, 500);
 }
