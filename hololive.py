@@ -36,7 +36,7 @@ def api(query = ""):
             status = 200,
             response = '{' +
                 '"status": 200, ' +
-                f'"content": {API(query=query)}' +
+                f'"streams": {API(query=query)}' +
             '}'
         )
     return response

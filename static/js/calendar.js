@@ -31,78 +31,80 @@ let apiRequest = $.ajax({
 // build calendar
 apiRequest.done(function (data) {
     // filter results
-    let items = JSON.parse(data).content;
+    let items = JSON.parse(data).streams;
     let live = null;
 
+    let calendarContainer = $("#calendarContainer");
+
     // create objects
-    items.forEach(item => {
-        let day = new Date(Date.parse(item.date));
+    items.forEach(stream => {
+        console.log(stream.time);
+        let streamTime = parseTime(stream.time);
+        console.log(streamTime);
+        let dayContainer = $("#" + (streamTime.getMonth()+1) + "-" + streamTime.getDate());
 
-        let dayContainer = $("<div/>", {
-            id: days[day.getDay()].substring(0, 3),
-            class: "dayContainer",
-        });
-        dayContainer.appendTo("#calendarContainer");
-        let dayHeader = $("<h1/>", {
-            class: "dayHeader",
-            text: (day.getMonth()+1) + "/" + day.getDate() + '\n' + days[day.getDay()],
+        if (!dayContainer.length) {
+            dayContainer = $("<div/>", {
+                id: (streamTime.getMonth()+1) + "-" + streamTime.getDate(),
+                class: "dayContainer",
+            });
+            dayContainer.appendTo(calendarContainer);
+            let dayHeader = $("<h1/>", {
+                class: "dayHeader",
+                text: (streamTime.getMonth()+1) + "/" + streamTime.getDate() + '\n' + days[streamTime.getDay()],
+            }).appendTo(dayContainer);
+            dayHeader.html(dayHeader.html().replace(/\n/g, '<br/>'));
+        }
+
+        let streamContainer = $("<div/>", {
+            id: stream.link,
+            class: "streamContainer",
         }).appendTo(dayContainer);
-        dayHeader.html(dayHeader.html().replace(/\n/g, '<br/>'));
 
-        item.streams.forEach(stream => {
-            let streamContainer = $("<div/>", {
-                id: stream.link,
-                class: "streamContainer",
-            }).appendTo($('#' + days[day.getDay()].substring(0, 3)));
+        let clickable = $("<a/>", {
+            class: "clickable",
+            href: stream.link,
+            target: '_blank',
+        }).appendTo(streamContainer);
 
-            let clickable = $("<a/>", {
-                class: "clickable",
-                href: stream.link,
-                target: '_blank',
-            }).appendTo(streamContainer);
+        $("<img/>", {
+            class: "thumbnail",
+            src: stream.thumbnail,
+            title: stream.host,
+        }).appendTo(clickable);
 
-            $("<img/>", {
-                class: "thumbnail",
-                src: stream.thumbnail,
-                title: stream.host,
-            }).appendTo(clickable);
+        let textContainer = $("<div/>", {
+            class: "textContainer",
+        }).appendTo(clickable);
 
-            let textContainer = $("<div/>", {
-                class: "textContainer",
-            }).appendTo(clickable);
+        let memberName = $("<h2/>", {
+            class: "memberName",
+            text: stream.host,
+        }).appendTo(textContainer);
 
-            let memberName = $("<h2/>", {
-                class: "memberName",
-                text: stream.host,
-            }).appendTo(textContainer);
+        memberName
+        .prepend($("<img/>", {
+            class: "avatar",
+            src: members[stream.collaborators[0]],
+            title: stream.host,
+        })
+        .appendTo(clickable));
 
-            memberName
-            .prepend($("<img/>", {
-                class: "avatar",
-                src: members[stream.collaborators[0]],
-                title: stream.host,
-            })
-            .appendTo(clickable));
+        $("<h2/>", {
+            class: "streamTime",
+            text: streamTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
+        }).appendTo(textContainer);
 
-            let streamTime = new Date(Date.parse(stream.time));
-
-            $("<h2/>", {
-                class: "streamTime",
-                text: streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
-            }).appendTo(textContainer);
-
-            if (stream.live) {
-                streamContainer.addClass("live");
-                memberName.append($("<span/>", {
-                    class: "liveDot",
-                }));
-                if (live === null) {
-                    live = streamContainer;
-                }
+        if (stream.live) {
+            streamContainer.addClass("live");
+            memberName.append($("<span/>", {
+                class: "liveDot",
+            }));
+            if (live === null) {
+                live = streamContainer;
             }
-        });
+        }
     });
-
     if (live) {
         waitForElement(live, function () {
             $('html, body').animate({
@@ -133,4 +135,10 @@ function waitForElement(elementPath, callBack){
         waitForElement(elementPath, callBack);
       }
     }, 500);
+}
+
+function parseTime(timeString) {
+    timeStr = timeString.slice(0, 10) + "T" + timeString.slice(11, timeString.length);
+    console.log(timeStr);
+    return new Date(timeStr);
 }

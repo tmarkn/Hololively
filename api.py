@@ -12,16 +12,6 @@ from_zone = tz.gettz('Asia/Tokyo')
 with open('static/json/members.json', 'r', encoding='utf-8') as f:
     members = json.load(f)
 
-class Day:
-    def __init__(self, date):
-        self.date = date
-        self.streams = []
-
-    def asDict(self):
-        dict = self.__dict__
-        dict["streams"] = [x.__dict__ for x in dict["streams"]]
-        return dict
-
 class Stream:
     def __init__(self, link, host, time, thumbnail, collaborators = [], live = False):
         self.link = link
@@ -40,11 +30,12 @@ def API(query):
     data = soup.find('div', attrs={'id': 'all'})
     containers = data.findAll('div', recursive=False, attrs={'class': 'container'})
     
-    days = []
+    data = []
     currentDay = None
     for cont in containers:
         # find day header
         dayHeader = cont.find('div', attrs={'class': 'holodule navbar-text'})
+        
         if dayHeader:
             # set date
             date = datetime.datetime.strptime(dayHeader.text.split()[0], '%m/%d')
@@ -56,9 +47,7 @@ def API(query):
             else:
                 date = date.replace(year=datetime.datetime.now().year)
 
-
-            currentDay = Day(date=date)
-            days.append(currentDay)
+            currentDay = date
 
         # find inner containers
         streams = cont.findAll('a', attrs={'class': 'thumbnail'})
@@ -71,7 +60,7 @@ def API(query):
 
             # time
             rawTime = stream.find('div', attrs={'class': 'datetime'}).text.strip().split(':')
-            time = currentDay.date.replace(hour=int(rawTime[0]), minute=int(rawTime[1]), tzinfo=from_zone)
+            time = currentDay.replace(hour=int(rawTime[0]), minute=int(rawTime[1]), tzinfo=from_zone)
 
             # thumbnail
             thumbnail = stream.findAll('img')[1]['src']
@@ -94,9 +83,9 @@ def API(query):
             live = bool(re.search(r"border: 3px red solid", stream.attrs.get('style')))
 
             # Stream
-            currentDay.streams.append(Stream(link, host, time, thumbnail, collaborators, live))
+            data.append(Stream(link, host, time, thumbnail, collaborators, live))
 
-    return json.dumps([x.asDict() for x in days], default=str, ensure_ascii=False)
+    return json.dumps([x.__dict__ for x in data], default=str, ensure_ascii=False)
 
 # with open('test.json', 'w', encoding='utf-8') as f:
 #     f.write(API('english'))
