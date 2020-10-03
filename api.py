@@ -51,8 +51,11 @@ def API(query):
             # set year
             if date.month == 12 and datetime.datetime.now().month == 1:
                 date = date.replace(year=datetime.datetime.now().year-1)
+            elif date.month == 1 and datetime.datetime.now().month == 12:
+                date = date.replace(year=datetime.datetime.now().year+1)
             else:
                 date = date.replace(year=datetime.datetime.now().year)
+
 
             currentDay = Day(date=date)
             days.append(currentDay)

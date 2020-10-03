@@ -117,8 +117,8 @@ apiRequest.done(function (data) {
         setTimeout(function() {
             $('html, body').animate({
                 scrollTop: live.offset().top - 120
-            }, 2000);
-        }, 500);
+            }, 1000, "swing");
+        }, 300);
     }
 
     $("#calendarContainer").hide().fadeIn('fast');
