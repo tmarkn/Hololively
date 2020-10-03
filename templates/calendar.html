@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/calendar.css')}}">
+    <div id="calendarContainer"></div>
+    <img id="fullsize" class="hidden" src=""/>
+
+    <script type="text/javascript" src="{{url_for('static', filename='js/calendar.js')}}"></script>
+{% endblock content %}

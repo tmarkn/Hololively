@@ -1,0 +1,13 @@
+#navBarContainer {
+    padding: 10px;
+}
+#mobileButton {
+    display: block;
+}
+#menu {
+    flex-direction: column;
+}
+#navBar a {
+    margin: 12px;
+    font-size: 16px;
+}

@@ -1,0 +1,60 @@
+:root {
+    --main-bg-color: #1C2021;
+    --main-text-color: white;
+    --main-accent-color: #27C7FF;
+}
+
+/* width */
+::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #131616; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #b6b6b6; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: white; 
+}
+
+/* Handle on click and drag*/
+::-webkit-scrollbar-thumb:active {
+    background: #cccccc; 
+}
+
+body {
+    margin: 0;
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    font-family: roboto;
+}
+
+#container {
+    margin: auto;
+    margin-top: 10em;
+    max-width: 1000px;
+}
+
+.watchColor {
+    background-color: green;
+}
+.completedColor {
+    background-color: blue;
+}
+.onHoldColor {
+    background-color: orange;
+}
+.droppedColor {
+    background-color: red;
+}
+.planToWatchColor {
+    background-color: lightgray;
+}

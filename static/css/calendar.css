@@ -1,0 +1,93 @@
+#title {
+    text-align: center;
+}
+
+#calendarContainer {
+    text-align: center;
+}
+.dayHeader {
+    text-align: center;
+}
+
+.streamContainer {
+    border: 4px solid var(--main-bg-color);
+    background-color: black;
+    max-width: 800px;
+    margin: auto;
+    margin-bottom: 16px;
+    transition: border linear 0.15s, -webkit-filter linear 0.3s;
+}
+.streamContainer.live {
+    background-color: #240000;
+}
+.streamContainer:hover {
+    border: 4px solid var(--main-accent-color);
+    -webkit-filter: brightness(115%);
+}
+.clickable {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+}
+.thumbnail {
+    flex: 1;
+    align-self: center;
+    max-width: 300px;
+}
+.textContainer {
+    flex: 1;
+}
+.avatar {
+    height: 2em;
+    vertical-align: middle;
+    border-radius: 4em;
+    margin-right: 6px;
+}
+.live > .clickable > .textContainer > .memberName > .avatar {
+    border: red solid 3px;
+}
+.memberName {
+    flex: 1;
+    color: white;
+    margin: 4px;
+}
+.liveDot {
+    background-color: red;
+    height: 14px;
+    width: 14px;
+    margin-left: 6px;
+    display: inline-block;
+    border-radius: 14px;
+}
+.streamTime {
+    flex: 1;
+    margin: 4px;
+    color: var(--main-accent-color);
+}
+.live > .clickable > .textContainer > .streamTime {
+    color: red;
+}
+
+.hidden {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    #container {
+        margin-top: 8em;
+    }
+    .thumbnail {
+        max-width: 240px;
+    }
+    .memberName {
+        font-size: 1em;
+    }
+    .live > .clickable > .textContainer > .memberName > .avatar {
+        border: red solid 2px;
+    }
+    .liveDot {
+        height: 12px;
+    }
+}
