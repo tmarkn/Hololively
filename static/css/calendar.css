@@ -70,8 +70,20 @@
     color: red;
 }
 
-.hidden {
-    display: none;
+#liveButton {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 32px;
+    background-color: red;
+    -webkit-filter: drop-shadow(5px 5px 5px #222222);
+    filter: drop-shadow(5px 5px 5px #222222);
+    cursor: pointer;
+    transform: scale(0);
+    transform-origin: center center;
+    transition: transform 0.2s ease;
 }
 
 @media screen and (max-width: 600px) {
