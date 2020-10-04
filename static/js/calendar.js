@@ -69,21 +69,27 @@ apiRequest.done(function (data) {
             target: '_blank',
         }).appendTo(streamContainer);
 
+        // topContainer
+        let topContainer = $("<div/>", {
+            class: "topContainer",
+        }).appendTo(clickable);
+
         // thumbnail
         $("<img/>", {
             class: "thumbnail",
             src: stream.thumbnail,
             title: stream.host,
-        }).appendTo(clickable);
+        }).appendTo(topContainer);
 
         // name
         let textContainer = $("<div/>", {
             class: "textContainer",
-        }).appendTo(clickable);
+        }).appendTo(topContainer);
 
         let memberName = $("<h2/>", {
             class: "memberName",
             text: stream.host,
+            title: stream.host,
         }).appendTo(textContainer)
             .prepend($("<img/>", {
                 class: "avatar",
@@ -92,9 +98,11 @@ apiRequest.done(function (data) {
             }));
 
         // time
+        let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
         $("<h2/>", {
             class: "streamTime",
-            text: streamTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
+            text: timeStr,
+            title: timeStr,
         }).appendTo(textContainer);
 
         // live
@@ -105,10 +113,27 @@ apiRequest.done(function (data) {
             }));
             live.push(streamContainer);
         }
+
+        // collaborators
+        if (stream.collaborators.length > 1) {
+            let collabContainer = $("<div/>", {
+                class: "collabContainer"
+            }).appendTo(clickable);
+            stream.collaborators.forEach(collaborator => {
+                // let collabImgContainer = $("<div/>", {
+                //     class: "collabImgContainer",
+                // }).appendTo(collabContainer)
+                $("<img/>", {
+                    class: "collabImg",
+                    src: members[collaborator].slice(0, members[collaborator].indexOf("=")),
+                    title: collaborator,
+                }).appendTo(collabContainer);
+            });
+        }
     });
     // scroll to live
     if (live.length) {
-        waitForElement(live, function () {
+        waitForElement(live[0], function () {
             liveButton.css("transform", "scale(1)");
         });
     }
@@ -119,7 +144,7 @@ apiRequest.fail(function (a, b) {
     console.log(data);
 });
 
-// live button
+// live button animations
 liveButton.on("mouseover", function () {
     $(this).css("transform", "scale(1.35)");
 });
@@ -165,7 +190,9 @@ function parseTime(timeString) {
 // scroll to live element
 let liveIndex = 0;
 function scrollToLive() {
+    // there is a live stream
     if (live.length) {
+        // calculate time to scroll to element
         let scrollPos = live[liveIndex].offset().top - 120;
         let scrollTime = Math.abs($(document).scrollTop() - scrollPos) / 4;
         if (scrollTime < 250) {
@@ -173,11 +200,13 @@ function scrollToLive() {
         } else if (scrollTime > 550) {
             scrollTime = 550;
         }
+        // animate
         $('html, body').stop();
         $('html, body').animate({
             scrollTop: scrollPos
         }, scrollTime, "swing");
     }
+    // move to next live stream
     liveIndex += 1;
     if (liveIndex >= live.length) {
         liveIndex = 0;
