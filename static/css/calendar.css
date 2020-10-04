@@ -35,17 +35,15 @@ img {
     align-items: center;
     justify-content: center;
 }
-.live .topContainer{
+.live{
     background-color: #300000;
 }
 .thumbnail {
     flex: 1;
     align-self: center;
     max-width: 300px;
-    border: 6px solid black;
-}
-.live .thumbnail {
-    border: 6px solid  #300000;
+    
+    padding: 6px;
 }
 .textContainer {
     flex: 1;
@@ -78,16 +76,11 @@ img {
     color: var(--main-accent-color);
 }
 .collabContainer {
-    border: 6px solid black;
-    border-top: none;
+    padding: 6px;
+    padding-top: 0;
     display: grid;
     grid-auto-rows: 100px;
     gap: 8px;
-}
-.live .collabContainer {
-    border: 6px solid #300000;
-    border-top: none;
-    background-color: #300000;
 }
 .collabImg:nth-child(1) { 
     grid-column: 1 / 5; 
