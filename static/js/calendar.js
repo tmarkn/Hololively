@@ -119,16 +119,15 @@ apiRequest.done(function (data) {
             let collabContainer = $("<div/>", {
                 class: "collabContainer"
             }).appendTo(clickable);
-            stream.collaborators.forEach(collaborator => {
-                // let collabImgContainer = $("<div/>", {
-                //     class: "collabImgContainer",
-                // }).appendTo(collabContainer)
-                $("<img/>", {
+            stream.collaborators.forEach(function (collaborator, index) {
+                let collabImg = $("<img/>", {
                     class: "collabImg",
                     src: members[collaborator].slice(0, members[collaborator].indexOf("=")),
                     title: collaborator,
                 }).appendTo(collabContainer);
+                collabImg.css("grid-column", (index*3 + 1) + "/" + (index*3 + 5));
             });
+            collabContainer.css("grid-template-columns", "repeat(" + (3*stream.collaborators.length+1) + ", 1fr)");
         }
     });
     // scroll to live
