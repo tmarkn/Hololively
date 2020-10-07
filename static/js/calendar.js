@@ -11,7 +11,7 @@ let days = [
 
 let members = {};
 let live = [];
-let liveButton = $("#liveButton");
+let liveContainer = $("#liveContainer");
 // fetch data from api
 $.ajax({
     url: "/static/json/members.json",
@@ -133,7 +133,7 @@ apiRequest.done(function (data) {
     // scroll to live
     if (live.length) {
         waitForElement(live[0], function () {
-            liveButton.css("transform", "scale(1)");
+            liveContainer.css("transform", "scale(1)");
         });
     }
 });
@@ -144,19 +144,19 @@ apiRequest.fail(function (a, b) {
 });
 
 // live button animations
-liveButton.on("mouseover", function () {
+liveContainer.on("mouseover", function () {
     $(this).css("transform", "scale(1.35)");
 });
 
-liveButton.on("mouseleave", function () {
+liveContainer.on("mouseleave", function () {
     $(this).css("transform", "scale(1)");
 });
 
-liveButton.on("mousedown", function () {
+liveContainer.on("mousedown", function () {
     $(this).css("transform", "scale(1.35)");
     scrollToLive();
     window.setTimeout(function () {
-        liveButton.css("transform", "scale(1)");
+        liveContainer.css("transform", "scale(1)");
     }, 100);
 });
 
