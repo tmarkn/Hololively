@@ -30,6 +30,7 @@ img {
     text-decoration: none;
 }
 .topContainer {
+    height: 181px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -42,7 +43,6 @@ img {
     flex: 1;
     align-self: center;
     max-width: 300px;
-    
     padding: 6px;
 }
 .textContainer {
@@ -79,7 +79,7 @@ img {
     padding: 6px;
     padding-top: 0;
     display: grid;
-    grid-auto-rows: 100px;
+    height: 100px;
     gap: 8px;
 }
 .collabImg {
@@ -87,6 +87,7 @@ img {
     width: 100%;
     height: 100%;
     grid-row: 1;
+    background-color: white;
     -webkit-clip-path: polygon(25% 0, 100% 0%, 75% 100%, 0% 100%);
     clip-path: polygon(25% 0, 100% 0%, 75% 100%, 0% 100%);
     -webkit-filter: brightness(85%);
@@ -100,7 +101,12 @@ img {
     -webkit-clip-path: polygon(25% 0, 100% 0%, 100% 100%, 0% 100%);
     clip-path: polygon(25% 0, 100% 0%, 100% 100%, 0% 100%);
 }
-
+.liveDot {
+    display: none;
+}
+.live .liveDot {
+    display: inline-block;
+}
 .live .streamTime {
     color: red;
 }
@@ -125,6 +131,9 @@ img {
     #container {
         margin-top: 8em;
     }
+    .topContainer {
+        height: 155px;
+    }
     .thumbnail {
         max-width: 240px;
     }
@@ -138,6 +147,6 @@ img {
         height: 12px;
     }
     .collabContainer {
-        grid-auto-rows: 75px;
+        height: 75px;
     }
 }

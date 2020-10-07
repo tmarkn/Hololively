@@ -35,7 +35,6 @@ apiRequest.done(function (data) {
     // filter results
     let items = JSON.parse(data).streams;
     let calendarContainer = $("#calendarContainer");
-    let count = 0;
     // create objects
     items.forEach(stream => {
         let streamTime = parseTime(stream.time);
@@ -49,11 +48,10 @@ apiRequest.done(function (data) {
                 class: "dayContainer",
             });
             dayContainer.appendTo(calendarContainer);
-            let dayHeader = $("<h1/>", {
+            $("<h1/>", {
                 class: "dayHeader",
-                text: (streamTime.getMonth() + 1) + "/" + streamTime.getDate() + '\n' + days[streamTime.getDay()],
+                html: (streamTime.getMonth() + 1) + "/" + streamTime.getDate() + '<br/>' + days[streamTime.getDay()],
             }).appendTo(dayContainer);
-            dayHeader.html(dayHeader.html().replace(/\n/g, '<br/>'));
         }
 
         // container
@@ -72,21 +70,21 @@ apiRequest.done(function (data) {
         // topContainer
         let topContainer = $("<div/>", {
             class: "topContainer",
-        }).appendTo(clickable);
-
-        // thumbnail
-        $("<img/>", {
-            class: "thumbnail",
-            src: stream.thumbnail,
-            title: stream.host,
-        }).appendTo(topContainer);
+        }).appendTo(clickable)
+            // thumbnail
+            .append( $("<img/>", {
+                class: "thumbnail",
+                src: stream.thumbnail,
+                title: stream.host,
+                loading: "lazy",
+            }));
 
         // name
         let textContainer = $("<div/>", {
             class: "textContainer",
         }).appendTo(topContainer);
 
-        let memberName = $("<h2/>", {
+        $("<h2/>", {
             class: "memberName",
             text: stream.host,
             title: stream.host,
@@ -95,6 +93,10 @@ apiRequest.done(function (data) {
                 class: "avatar",
                 src: members[stream.collaborators[0]],
                 title: stream.host,
+                loading: "lazy",
+            }))
+            .append($("<span/>", {
+                class: "liveDot",
             }));
 
         // time
@@ -108,9 +110,6 @@ apiRequest.done(function (data) {
         // live
         if (stream.live) {
             streamContainer.addClass("live");
-            memberName.append($("<span/>", {
-                class: "liveDot",
-            }));
             live.push(streamContainer);
         }
 
@@ -124,6 +123,7 @@ apiRequest.done(function (data) {
                     class: "collabImg",
                     src: members[collaborator].slice(0, members[collaborator].indexOf("=")),
                     title: collaborator,
+                    loading: "lazy",
                 }).appendTo(collabContainer);
                 collabImg.css("grid-column", (index*3 + 1) + "/" + (index*3 + 5));
             });
