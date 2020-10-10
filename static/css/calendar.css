@@ -114,7 +114,7 @@ img {
 #liveContainer {
     color: red;
     position: fixed;
-    right: 12px;
+    right: 20px;
     bottom: 12px;
     cursor: pointer;
     font-size: 32px;
