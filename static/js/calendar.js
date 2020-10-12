@@ -9,9 +9,34 @@ let days = [
     "SAT (土)"
 ];
 
+// endpoints
+let endpoints = [
+    "",
+    "hololive",
+    "holostars",
+    "innk",
+    "china",
+    "indonesia",
+    "english"
+];
+
+// variables
 let members = {};
 let live = [];
 let liveContainer = $("#liveContainer");
+
+// query
+var url = new URL(window.location.href);
+var query = url.searchParams.get("q");
+if (query === null) {
+    query = "";
+}
+
+// validate query
+if (query && !endpoints.includes(query)) {
+    window.location.href = "/404";
+}
+
 // fetch data from api
 $.ajax({
     url: "/static/json/members.json",
@@ -23,8 +48,9 @@ $.ajax({
     }
 });
 
+// get from api
 let apiRequest = $.ajax({
-    url: "/api/",
+    url: "/api/" + query,
     type: "GET",
     cache: true,
 });
