@@ -77,10 +77,9 @@ apiRequest.done(function (data) {
                         $("<img/>", { class: "thumbnail", src: stream.thumbnail, title: stream.host, loading: "lazy" }),
                         // text
                         $("<div/>", { class: "textContainer" }).append(
-                            $("<h2/>", { class: "memberName", title: stream.host, text: stream.host }).append(
-                                $("<img/>", { class: "avatar", src: members[stream.collaborators[0]], title: stream.host, loading: "lazy" }),
-                                $("<span/>", { class: "liveDot" })
-                            ),
+                            $("<h2/>", { class: "memberName", title: stream.host, text: stream.host })
+                                .prepend($("<img/>", { class: "avatar", src: members[stream.collaborators[0]], title: stream.host, loading: "lazy" }))
+                                .append($("<span/>", { class: "liveDot" })),
                             // time
                             $("<h2/>", { class: "streamTime", title: timeStr, text: timeStr})
                         )
