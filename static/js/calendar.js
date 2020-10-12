@@ -43,74 +43,56 @@ apiRequest.done(function (data) {
 
         // create day container if not yet made
         if (!dayContainer.length) {
-            dayContainer = $("<div/>", {
-                id: (streamTime.getMonth() + 1) + "-" + streamTime.getDate(),
-                class: "dayContainer",
-            });
-            dayContainer.appendTo(calendarContainer);
-            $("<h1/>", {
-                class: "dayHeader",
-                html: (streamTime.getMonth() + 1) + "/" + streamTime.getDate() + '<br/>' + days[streamTime.getDay()],
-            }).appendTo(dayContainer);
+            // create day container
+            dayContainer = $("<div/>", { id: (streamTime.getMonth() + 1) + "-" + streamTime.getDate(), class: "dayContainer" }).append(
+                // header
+                $("<h1/>", { 
+                    class: "dayHeader", 
+                    html: (streamTime.getMonth() + 1) + "/" + streamTime.getDate() + '<br/>' + days[streamTime.getDay()]
+                })
+            ).appendTo(calendarContainer);
         }
 
         // container
         let streamContainer = $("<div/>", {
             id: stream.link.slice(32, stream.link.length),
-            class: "streamContainer",
-        }).appendTo(dayContainer);
-
+            class: "streamContainer"
+        })
         // clickable link
         let clickable = $("<a/>", {
             class: "clickable",
             href: stream.link,
-            target: '_blank',
-        }).appendTo(streamContainer);
+            target: '_blank'
+        })
 
-        // topContainer
-        let topContainer = $("<div/>", {
-            class: "topContainer",
-        }).appendTo(clickable)
-            // thumbnail
-            .append( $("<img/>", {
-                class: "thumbnail",
-                src: stream.thumbnail,
-                title: stream.host,
-                loading: "lazy",
-            }));
-
-        // name
-        let textContainer = $("<div/>", {
-            class: "textContainer",
-        }).appendTo(topContainer);
-
-        $("<h2/>", {
-            class: "memberName",
-            text: stream.host,
-            title: stream.host,
-        }).appendTo(textContainer)
-            .prepend($("<img/>", {
-                class: "avatar",
-                src: members[stream.collaborators[0]],
-                title: stream.host,
-                loading: "lazy",
-            }))
-            .append($("<span/>", {
-                class: "liveDot",
-            }));
-
-        // time
+        // time string
         let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-        $("<h2/>", {
-            class: "streamTime",
-            text: timeStr,
-            title: timeStr,
-        }).appendTo(textContainer);
+
+        dayContainer.append(
+            streamContainer.append(
+                clickable.append(
+                    // topContainer
+                    $("<div/>", { class: "topContainer" }).append(
+                        // thumbnail
+                        $("<img/>", { class: "thumbnail", src: stream.thumbnail, title: stream.host, loading: "lazy" }),
+                        // text
+                        $("<div/>", { class: "textContainer" }).append(
+                            $("<h2/>", { class: "memberName", title: stream.host, text: stream.host }).append(
+                                $("<img/>", { class: "avatar", src: members[stream.collaborators[0]], title: stream.host, loading: "lazy" }),
+                                $("<span/>", { class: "liveDot" })
+                            ),
+                            // time
+                            $("<h2/>", { class: "streamTime", title: timeStr, text: timeStr})
+                        )
+                    )
+                )
+            )
+        )
 
         // live
         if (stream.live) {
             streamContainer.addClass("live");
-            live.push(streamContainer);
+            live.push("#" + stream.link.slice(32, stream.link.length));
         }
 
         // collaborators
@@ -123,19 +105,23 @@ apiRequest.done(function (data) {
 
         // collab stream
         if (stream.collaborators.length > 1) {
-            let collabContainer = $("<div/>", {
-                class: "collabContainer"
+            let collabContainer = $("<div/>", { 
+                class: "collabContainer", 
+                style: "grid-template-columns" + "repeat(" + (3*stream.collaborators.length+1) + ", 1fr)" 
             }).appendTo(clickable);
+
+            // create collab images
             stream.collaborators.forEach(function (collaborator, index) {
-                let collabImg = $("<img/>", {
-                    class: "collabImg",
-                    src: members[collaborator].slice(0, members[collaborator].indexOf("=")),
-                    title: collaborator,
-                    loading: "lazy",
-                }).appendTo(collabContainer);
-                collabImg.css("grid-column", (index*3 + 1) + "/" + (index*3 + 5));
+                collabContainer.append(
+                    $("<img/>", {
+                        class: "collabImg",
+                        src: members[collaborator].slice(0, members[collaborator].indexOf("=")),
+                        title: collaborator,
+                        loading: "lazy",
+                        style: "grid-column:" + (index*3 + 1) + "/" + (index*3 + 5) + ";"
+                    })
+                )
             });
-            collabContainer.css("grid-template-columns", "repeat(" + (3*stream.collaborators.length+1) + ", 1fr)");
         }
     });
     // scroll to live
@@ -200,7 +186,7 @@ function scrollToLive() {
     // there is a live stream
     if (live.length) {
         // calculate time to scroll to element
-        let scrollPos = live[liveIndex].offset().top - 120;
+        let scrollPos = $(live[liveIndex]).offset().top - 120;
         let scrollTime = Math.abs($(document).scrollTop() - scrollPos) / 4;
         if (scrollTime < 250) {
             scrollTime = 250;
