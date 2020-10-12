@@ -13,6 +13,7 @@ def about():
 
 @app.route('/api/')
 @app.route('/api/<query>')
+@app.route('/api/<query>/')
 def api(query = ""):
     endpoints = [
         "",

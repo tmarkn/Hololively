@@ -1,1 +1,1 @@
-web gunicorn hololive:app
+web gunicorn hololively:app
