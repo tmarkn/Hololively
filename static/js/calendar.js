@@ -114,6 +114,14 @@ apiRequest.done(function (data) {
         }
 
         // collaborators
+        if (stream.host === "癒月ちょこ") {
+            let subChIndex = stream.collaborators.indexOf("癒月ちょこ subCh. (Yuzuki Choco subCh.)")
+            if (subChIndex >= 0) {
+                stream.collaborators.splice(subChIndex, 1);
+            }
+        }
+
+        // collab stream
         if (stream.collaborators.length > 1) {
             let collabContainer = $("<div/>", {
                 class: "collabContainer"
