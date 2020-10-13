@@ -132,7 +132,7 @@ apiRequest.done(function (data) {
         if (stream.collaborators.length > 1) {
             let collabContainer = $("<div/>", { 
                 class: "collabContainer", 
-                style: "grid-template-columns" + "repeat(" + (3*stream.collaborators.length+1) + ", 1fr)" 
+                style: "grid-template-columns:" + "repeat(" + (3*stream.collaborators.length+1) + ", 1fr)" 
             }).appendTo(clickable);
 
             // create collab images
