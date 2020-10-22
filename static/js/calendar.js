@@ -136,16 +136,22 @@ apiRequest.done(function (data) {
             }).appendTo(clickable);
 
             // create collab images
+            let collabs = [];
             stream.collaborators.forEach(function (collaborator, index) {
-                collabContainer.append(
-                    $("<img/>", {
-                        class: "collabImg",
-                        src: members[collaborator].slice(0, members[collaborator].indexOf("=")),
-                        title: collaborator,
-                        loading: "lazy",
-                        style: "grid-column:" + (index*3 + 1) + "/" + (index*3 + 5) + ";"
-                    })
-                )
+                // prevent duplicates
+                if (!collabs.includes(collaborator)) {
+                    // add collaborator
+                    collabContainer.append(
+                        $("<img/>", {
+                            class: "collabImg",
+                            src: members[collaborator].slice(0, members[collaborator].indexOf("=")),
+                            title: collaborator,
+                            loading: "lazy",
+                            style: "grid-column:" + (index*3 + 1) + "/" + (index*3 + 5) + ";"
+                        })
+                    )
+                    collabs.push(collaborator);
+                }
             });
         }
     });
