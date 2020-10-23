@@ -31,6 +31,8 @@ nav {
 #logo {
     height: 60%;
     margin-right: 4px;
+    -webkit-filter: drop-shadow(-6px 6px black);
+    filter: drop-shadow(-6px 6px black);
 }
 #mobileButton {
     filter: invert(64%) sepia(11%) saturate(5402%) hue-rotate(167deg) brightness(104%) contrast(105%);
