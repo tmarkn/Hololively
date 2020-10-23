@@ -72,8 +72,8 @@ apiRequest.done(function (data) {
             // create day container
             dayContainer = $("<div/>", { id: (streamTime.getMonth() + 1) + "-" + streamTime.getDate(), class: "dayContainer" }).append(
                 // header
-                $("<h1/>", { 
-                    class: "dayHeader", 
+                $("<h1/>", {
+                    class: "dayHeader",
                     html: (streamTime.getMonth() + 1) + "/" + streamTime.getDate() + '<br/>' + days[streamTime.getDay()]
                 })
             ).appendTo(calendarContainer);
@@ -107,7 +107,7 @@ apiRequest.done(function (data) {
                                 .prepend($("<img/>", { class: "avatar", src: members[stream.collaborators[0]], title: stream.host, loading: "lazy" }))
                                 .append($("<span/>", { class: "liveDot" })),
                             // time
-                            $("<h2/>", { class: "streamTime", title: timeStr, text: timeStr})
+                            $("<h2/>", { class: "streamTime", title: timeStr, text: timeStr })
                         )
                     )
                 )
@@ -121,37 +121,37 @@ apiRequest.done(function (data) {
         }
 
         // collaborators
+        // unique collaborators only
+        let collaborators = stream.collaborators.filter(onlyUnique);
+        
+        // prevent Choco subCh.
         if (stream.host === "癒月ちょこ") {
-            let subChIndex = stream.collaborators.indexOf("癒月ちょこ subCh. (Yuzuki Choco subCh.)")
-            if (subChIndex >= 0) {
-                stream.collaborators.splice(subChIndex, 1);
+            let chocoMainChIndex = collaborators.indexOf("癒月ちょこ (Yuzuki Choco)");
+            let chocoSubChIndex = collaborators.indexOf("癒月ちょこ subCh. (Yuzuki Choco subCh.)");
+            if (chocoMainChIndex >= 0 && chocoSubChIndex > 0) {
+                collaborators.splice(chocoSubChIndex, 1);
             }
         }
 
         // collab stream
-        if (stream.collaborators.length > 1) {
-            let collabContainer = $("<div/>", { 
-                class: "collabContainer", 
-                style: "grid-template-columns:" + "repeat(" + (3*stream.collaborators.length+1) + ", 1fr)" 
+        if (collaborators.length > 1) {
+            let collabContainer = $("<div/>", {
+                class: "collabContainer",
+                style: "grid-template-columns:" + "repeat(" + (3 * collaborators.length + 1) + ", 1fr)"
             }).appendTo(clickable);
 
             // create collab images
-            let collabs = [];
-            stream.collaborators.forEach(function (collaborator, index) {
-                // prevent duplicates
-                if (!collabs.includes(collaborator)) {
-                    // add collaborator
-                    collabContainer.append(
-                        $("<img/>", {
-                            class: "collabImg",
-                            src: members[collaborator].slice(0, members[collaborator].indexOf("=")),
-                            title: collaborator,
-                            loading: "lazy",
-                            style: "grid-column:" + (index*3 + 1) + "/" + (index*3 + 5) + ";"
-                        })
-                    )
-                    collabs.push(collaborator);
-                }
+            collaborators.forEach(function (collaborator, index) {
+                // add collaborator
+                collabContainer.append(
+                    $("<img/>", {
+                        class: "collabImg",
+                        src: members[collaborator].slice(0, members[collaborator].indexOf("=")),
+                        title: collaborator,
+                        loading: "lazy",
+                        style: "grid-column:" + (index * 3 + 1) + "/" + (index * 3 + 5) + ";"
+                    })
+                )
             });
         }
     });
@@ -235,4 +235,8 @@ function scrollToLive() {
     if (liveIndex >= live.length) {
         liveIndex = 0;
     }
+}
+
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
 }

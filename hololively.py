@@ -50,11 +50,5 @@ def docs():
 def page_not_found(error):
     return render_template('404.html')
 
-# @app.after_request
-# def add_header(response):
-#     if 'Cache-Control' not in response.headers:
-#         response.headers['Cache-Control'] = 'no-store'
-#     return response
-
 if __name__ == '__main__':
     app.run(host= '0.0.0.0')
