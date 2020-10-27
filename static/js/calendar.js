@@ -125,10 +125,10 @@ apiRequest.done(function (data) {
         let collaborators = stream.collaborators.filter(onlyUnique);
         
         // prevent Choco subCh.
-        if (stream.host === "癒月ちょこ") {
+        if (stream.host === "癒月ちょこ" || stream.host === "癒月ちょこSub") {
             let chocoMainChIndex = collaborators.indexOf("癒月ちょこ (Yuzuki Choco)");
             let chocoSubChIndex = collaborators.indexOf("癒月ちょこ subCh. (Yuzuki Choco subCh.)");
-            if (chocoMainChIndex >= 0 && chocoSubChIndex > 0) {
+            if (chocoMainChIndex >= 0 && chocoSubChIndex >= 0) {
                 collaborators.splice(chocoSubChIndex, 1);
             }
         }
