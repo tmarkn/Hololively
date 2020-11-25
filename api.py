@@ -59,7 +59,11 @@ def API(query):
             host = stream.find('div', attrs={'class': 'name'}).text.strip()
 
             # time
-            rawTime = stream.find('div', attrs={'class': 'datetime'}).text.strip().split(':')
+            try:
+                rawTime = stream.find('div', attrs={'class': 'datetime'}).text.strip().split(':')
+            except Exception:
+                continue
+            
             time = currentDay.replace(hour=int(rawTime[0]), minute=int(rawTime[1]), tzinfo=from_zone)
 
             # thumbnail
