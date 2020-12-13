@@ -1,14 +1,18 @@
 # Hololively
 
 This is my repository for the Hololively App and API.
+
 You can find the official application hosted at http://hololively.herokuapp.com/.
+
 The results can be filted by appending `?q=` and then one of the filters below to the end.
 `eg. http://hololively.herokuapp.com/?q=english`
 
 # API
 
 The API can be accessed at http://hololively.herokuapp.com/api/.
+
 The results can be filtered by appending one of the filters below to the end.
+
 `eg. http://hololively.herokuapp.com/api/english`
 
 # Filters
