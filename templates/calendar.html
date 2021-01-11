@@ -6,5 +6,9 @@
         LIVE
         <span id="liveButton"></span>
     </div>
+    <script>
+        let streams = JSON.parse({{ streams | tojson | safe}});
+        let members = JSON.parse({{ members | tojson | safe}});
+    </script>
     <script type="text/javascript" src="{{url_for('static', filename='js/calendar.js')}}"></script>
 {% endblock content %}

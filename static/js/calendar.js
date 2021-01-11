@@ -9,164 +9,113 @@ let days = [
     "SAT (土)"
 ];
 
-// endpoints
-let endpoints = [
-    "",
-    "hololive",
-    "holostars",
-    "innk",
-    "china",
-    "indonesia",
-    "english"
-];
-
 // variables
-let members = {};
+let revMembers = swap(members);
 let live = [];
 let liveContainer = $("#liveContainer");
+let calendarContainer = $("#calendarContainer");
 
-// query
-var url = new URL(window.location.href);
-var query = url.searchParams.get("q");
-if (query === null) {
-    query = "";
-}
-
-// validate query
-if (query && !endpoints.includes(query)) {
-    window.location.href = "/404";
-}
-
-// fetch data from api
-$.ajax({
-    url: "/static/json/members.json",
-    type: "GET",
-    cache: true,
-    async: false,
-    success: function (data) {
-        members = swap(data);
-    }
-});
-
-// get from api
-let apiRequest = $.ajax({
-    url: "/api/" + query,
-    type: "GET",
-    cache: true,
-});
-
-// fetch successful
 // build calendar
-apiRequest.done(function (data) {
-    // filter results
-    let items = JSON.parse(data).streams;
-    let calendarContainer = $("#calendarContainer");
-    // create objects
-    items.forEach(stream => {
-        let streamTime = parseTime(stream.time);
-        // find day container
-        let dayContainer = $("#" + (streamTime.getMonth() + 1) + "-" + streamTime.getDate());
+// create objects
+streams.forEach(stream => {
+    let streamTime = parseTime(stream.time);
+    // find day container
+    let dayContainer = $("#" + (streamTime.getMonth() + 1) + "-" + streamTime.getDate());
 
-        // create day container if not yet made
-        if (!dayContainer.length) {
-            // create day container
-            dayContainer = $("<div/>", { id: (streamTime.getMonth() + 1) + "-" + streamTime.getDate(), class: "dayContainer" }).append(
-                // header
-                $("<h1/>", {
-                    class: "dayHeader",
-                    html: (streamTime.getMonth() + 1) + "/" + streamTime.getDate() + '<br/>' + days[streamTime.getDay()]
-                })
-            ).appendTo(calendarContainer);
-        }
+    // create day container if not yet made
+    if (!dayContainer.length) {
+        // create day container
+        dayContainer = $("<div/>", { id: (streamTime.getMonth() + 1) + "-" + streamTime.getDate(), class: "dayContainer" }).append(
+            // header
+            $("<h1/>", {
+                class: "dayHeader",
+                html: (streamTime.getMonth() + 1) + "/" + streamTime.getDate() + '<br/>' + days[streamTime.getDay()]
+            })
+        ).appendTo(calendarContainer);
+    }
 
-        // container
-        let streamContainer = $("<div/>", {
-            id: stream.link.slice(32, stream.link.length),
-            class: "streamContainer"
-        })
-        // clickable link
-        let clickable = $("<a/>", {
-            class: "clickable",
-            href: stream.link,
-            target: '_blank'
-        })
+    // container
+    let streamContainer = $("<div/>", {
+        id: stream.link.slice(32, stream.link.length),
+        class: "streamContainer"
+    })
+    // clickable link
+    let clickable = $("<a/>", {
+        class: "clickable",
+        href: stream.link,
+        target: '_blank'
+    })
 
-        // time string
-        let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    // time string
+    let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 
-        dayContainer.append(
-            streamContainer.append(
-                clickable.append(
-                    // topContainer
-                    $("<div/>", { class: "topContainer" }).append(
-                        // thumbnail
-                        $("<img/>", { class: "thumbnail", src: stream.thumbnail, title: stream.host, loading: "lazy" }),
-                        // text
-                        $("<div/>", { class: "textContainer" }).append(
-                            $("<h2/>", { class: "memberName", title: stream.host, text: stream.host })
-                                .prepend($("<img/>", { class: "avatar", src: members[stream.collaborators[0]], title: stream.host, loading: "lazy" }))
-                                .append($("<span/>", { class: "liveDot" })),
-                            // time
-                            $("<h2/>", { class: "streamTime", title: timeStr, text: timeStr })
-                        )
+    dayContainer.append(
+        streamContainer.append(
+            clickable.append(
+                // topContainer
+                $("<div/>", { class: "topContainer" }).append(
+                    // thumbnail
+                    $("<img/>", { class: "thumbnail", src: stream.thumbnail, title: stream.host, loading: "lazy" }),
+                    // text
+                    $("<div/>", { class: "textContainer" }).append(
+                        $("<h2/>", { class: "memberName", title: stream.host, text: stream.host })
+                            .prepend($("<img/>", { class: "avatar", src: revMembers[stream.collaborators[0]], title: stream.host, loading: "lazy" }))
+                            .append($("<span/>", { class: "liveDot" })),
+                        // time
+                        $("<h2/>", { class: "streamTime", title: timeStr, text: timeStr })
                     )
                 )
             )
         )
+    )
 
-        // live
-        if (stream.live) {
-            streamContainer.addClass("live");
-            live.push("#" + stream.link.slice(32, stream.link.length));
+    // live
+    if (stream.live) {
+        streamContainer.addClass("live");
+        live.push("#" + stream.link.slice(32, stream.link.length));
+    }
+
+    // collaborators
+    // unique collaborators only
+    let collaborators = stream.collaborators.filter(onlyUnique);
+    
+    // prevent Choco subCh.
+    if (stream.host === "癒月ちょこ" || stream.host === "癒月ちょこSub") {
+        let chocoMainChIndex = collaborators.indexOf("癒月ちょこ (Yuzuki Choco)");
+        let chocoSubChIndex = collaborators.indexOf("癒月ちょこ subCh. (Yuzuki Choco subCh.)");
+        if (chocoMainChIndex >= 0 && chocoSubChIndex >= 0) {
+            collaborators.splice(chocoSubChIndex, 1);
         }
+    }
 
-        // collaborators
-        // unique collaborators only
-        let collaborators = stream.collaborators.filter(onlyUnique);
-        
-        // prevent Choco subCh.
-        if (stream.host === "癒月ちょこ" || stream.host === "癒月ちょこSub") {
-            let chocoMainChIndex = collaborators.indexOf("癒月ちょこ (Yuzuki Choco)");
-            let chocoSubChIndex = collaborators.indexOf("癒月ちょこ subCh. (Yuzuki Choco subCh.)");
-            if (chocoMainChIndex >= 0 && chocoSubChIndex >= 0) {
-                collaborators.splice(chocoSubChIndex, 1);
-            }
-        }
+    // collab stream
+    if (collaborators.length > 1) {
+        let collabContainer = $("<div/>", {
+            class: "collabContainer",
+            style: "grid-template-columns:" + "repeat(" + (3 * collaborators.length + 1) + ", 1fr)"
+        }).appendTo(clickable);
 
-        // collab stream
-        if (collaborators.length > 1) {
-            let collabContainer = $("<div/>", {
-                class: "collabContainer",
-                style: "grid-template-columns:" + "repeat(" + (3 * collaborators.length + 1) + ", 1fr)"
-            }).appendTo(clickable);
-
-            // create collab images
-            collaborators.forEach(function (collaborator, index) {
-                // add collaborator
-                collabContainer.append(
-                    $("<img/>", {
-                        class: "collabImg",
-                        src: members[collaborator].slice(0, members[collaborator].indexOf("=")),
-                        title: collaborator,
-                        loading: "lazy",
-                        style: "grid-column:" + (index * 3 + 1) + "/" + (index * 3 + 5) + ";"
-                    })
-                )
-            });
-        }
-    });
-    // scroll to live
-    if (live.length) {
-        waitForElement(live[0], function () {
-            liveContainer.css("transform", "scale(1)");
+        // create collab images
+        collaborators.forEach(function (collaborator, index) {
+            // add collaborator
+            collabContainer.append(
+                $("<img/>", {
+                    class: "collabImg",
+                    src: revMembers[collaborator].slice(0, revMembers[collaborator].indexOf("=")),
+                    title: collaborator,
+                    loading: "lazy",
+                    style: "grid-column:" + (index * 3 + 1) + "/" + (index * 3 + 5) + ";"
+                })
+            )
         });
     }
 });
-
-// fetch failed
-apiRequest.fail(function (a, b) {
-    console.log(data);
-});
+// scroll to live
+if (live.length) {
+    waitForElement(live[0], function () {
+        liveContainer.css("transform", "scale(1)");
+    });
+}
 
 // live button animations
 liveContainer.on("mouseover", function () {

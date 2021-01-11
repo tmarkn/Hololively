@@ -1,11 +1,18 @@
+import json
 from api import API
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 app = Flask(__name__, static_url_path='/static')
+
+with open('static/json/members.json', 'r', encoding="utf-8") as f:
+    members = f.read()
 
 @app.route('/')
 @app.route('/home/')
 def home():
-    return render_template('calendar.html', title='Home')
+    query = request.args.get('q')
+    if not query:
+        query = ''
+    return render_template('calendar.html', title='Home', streams=API(query=query), members=members)
 
 @app.route('/about/')
 def about():
@@ -14,7 +21,7 @@ def about():
 @app.route('/api/')
 @app.route('/api/<query>')
 @app.route('/api/<query>/')
-def api(query = ""):
+def api(query = ''):
     endpoints = [
         "",
         "hololive",
