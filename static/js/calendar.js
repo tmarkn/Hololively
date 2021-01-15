@@ -14,65 +14,60 @@ let revMembers = swap(members);
 let live = [];
 let liveContainer = $("#liveContainer");
 let calendarContainer = $("#calendarContainer");
+let dayTemplate = $("#dayTemplate");
+let streamTemplate = $("#streamTemplate");
+let callobTemplate = $("#callobTemplate");
 
 // build calendar
 // create objects
 streams.forEach(stream => {
     let streamTime = parseTime(stream.time);
     // find day container
-    let dayContainer = $("#" + (streamTime.getMonth() + 1) + "-" + streamTime.getDate());
+    let dayContainer = $(`#${streamTime.getMonth() + 1}-${streamTime.getDate()}`);
 
     // create day container if not yet made
     if (!dayContainer.length) {
         // create day container
-        dayContainer = $("<div/>", { id: (streamTime.getMonth() + 1) + "-" + streamTime.getDate(), class: "dayContainer" }).append(
-            // header
-            $("<h1/>", {
-                class: "dayHeader",
-                html: (streamTime.getMonth() + 1) + "/" + streamTime.getDate() + '<br/>' + days[streamTime.getDay()]
-            })
-        ).appendTo(calendarContainer);
+        dayContainer = dayTemplate.clone();
+        dayContainer.attr("id", `${streamTime.getMonth() + 1}-${streamTime.getDate()}`);
+        dayContainer.find("#dayHeader").html(`${streamTime.getMonth() + 1}/${streamTime.getDate()}<br/>${days[streamTime.getDay()]}`);
+        dayContainer.appendTo(calendarContainer);
     }
 
     // container
-    let streamContainer = $("<div/>", {
-        id: stream.link.slice(32, stream.link.length),
-        class: "streamContainer"
-    })
+    let streamContainer = streamTemplate.clone();
+    streamContainer.attr("id", stream.link.slice(32, stream.link.length))
+        .attr("title", stream.host)
+        .appendTo(dayContainer);
+
     // clickable link
-    let clickable = $("<a/>", {
-        class: "clickable",
-        href: stream.link,
-        target: '_blank'
-    })
+    let clickable = streamContainer.find(".clickable");
+    clickable.attr("href", stream.link);
 
-    // time string
+    // thumbnail
+    let thumbnail = clickable.find(".thumbnail");
+    thumbnail.attr("src", stream.thumbnail)
+
+    // avatar
+    let avatar = clickable.find(".avatar");
+    avatar.attr("src", revMembers[stream.collaborators[0]])
+
+    // name
+    let mName = clickable.find(".mName");
+    mName.text(stream.host);
+    
+    // time
     let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    let lastSpacePos = timeStr.lastIndexOf(" ");
 
-    dayContainer.append(
-        streamContainer.append(
-            clickable.append(
-                // topContainer
-                $("<div/>", { class: "topContainer" }).append(
-                    // thumbnail
-                    $("<img/>", { class: "thumbnail", src: stream.thumbnail, title: stream.host, loading: "lazy" }),
-                    // text
-                    $("<div/>", { class: "textContainer" }).append(
-                        $("<h2/>", { class: "memberName", title: stream.host, text: stream.host })
-                            .prepend($("<img/>", { class: "avatar", src: revMembers[stream.collaborators[0]], title: stream.host, loading: "lazy" }))
-                            .append($("<span/>", { class: "liveDot" })),
-                        // time
-                        $("<h2/>", { class: "streamTime", title: timeStr, text: timeStr })
-                    )
-                )
-            )
-        )
-    )
+    let time = clickable.find(".streamTime")
+    time.attr("title", timeStr)
+        .html(timeStr);
 
     // live
     if (stream.live) {
         streamContainer.addClass("live");
-        live.push("#" + stream.link.slice(32, stream.link.length));
+        live.push(`#${stream.link.slice(32, stream.link.length)}`);
     }
 
     // collaborators
@@ -89,48 +84,45 @@ streams.forEach(stream => {
     }
 
     // collab stream
+    let collabContainer = clickable.find(".collabContainer");
     if (collaborators.length > 1) {
-        let collabContainer = $("<div/>", {
-            class: "collabContainer",
-            style: "grid-template-columns:" + "repeat(" + (3 * collaborators.length + 1) + ", 1fr)"
-        }).appendTo(clickable);
+        // grid
+        collabContainer.css("grid-template-columns", `repeat(${3 * collaborators.length + 1}, 1fr)`);
 
         // create collab images
         collaborators.forEach(function (collaborator, index) {
-            // add collaborator
-            collabContainer.append(
-                $("<img/>", {
-                    class: "collabImg",
-                    src: revMembers[collaborator].slice(0, revMembers[collaborator].indexOf("=")),
-                    title: collaborator,
-                    loading: "lazy",
-                    style: "grid-column:" + (index * 3 + 1) + "/" + (index * 3 + 5) + ";"
-                })
-            )
+            let collabor = $("#collabTemplate").clone();
+            collabor.attr("src", revMembers[collaborator].slice(0, revMembers[collaborator].indexOf("=")))
+                .attr("title", collaborator)
+                .css("grid-column", `${index * 3 + 1}/${index * 3 + 5}`);
+            collabor.appendTo(collabContainer);
+            collabor.removeAttr("id");
         });
+    } else {
+        collabContainer.remove();
     }
 });
 // scroll to live
 if (live.length) {
     waitForElement(live[0], function () {
-        liveContainer.css("transform", "scale(1)");
+        liveContainer.css("transform", "scale(0.7)");
     });
 }
 
 // live button animations
 liveContainer.on("mouseover", function () {
-    $(this).css("transform", "scale(1.35)");
-});
-
-liveContainer.on("mouseleave", function () {
     $(this).css("transform", "scale(1)");
 });
 
+liveContainer.on("mouseleave", function () {
+    $(this).css("transform", "scale(0.7)");
+});
+
 liveContainer.on("mousedown", function () {
-    $(this).css("transform", "scale(1.35)");
+    $(this).css("transform", "scale(1)");
     scrollToLive();
     window.setTimeout(function () {
-        liveContainer.css("transform", "scale(1)");
+        liveContainer.css("transform", "scale(0.7)");
     }, 100);
 });
 
@@ -180,10 +172,7 @@ function scrollToLive() {
         }, scrollTime, "swing");
     }
     // move to next live stream
-    liveIndex += 1;
-    if (liveIndex >= live.length) {
-        liveIndex = 0;
-    }
+    liveIndex = (liveIndex + 1) % live.length;
 }
 
 function onlyUnique(value, index, self) {

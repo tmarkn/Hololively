@@ -6,6 +6,24 @@
         LIVE
         <span id="liveButton"></span>
     </div>
+    <div id="dayTemplate" class="dayContainer">
+        <h1 class="dayHeader"></h1>
+    </div>
+    <div id="streamTemplate" class="streamContainer">
+        <a class="clickable" target="_blank">
+            <div class="topContainer">
+                <img class="thumbnail" loading="lazy">
+                <div class="textContainer">
+                    <h2 class="memberName">
+                        <img class="avatar" loading="lazy"><span class="mName"></span><span class="liveDot"></span>
+                    </h2>
+                    <h2 class="streamTime"></h2>
+                </div>
+            </div>
+            <div class="collabContainer"></div>
+        </a>
+    </div>
+    <img id="collabTemplate" class="collabImg" loading="lazy">
     <script>
         let streams = JSON.parse({{ streams | tojson | safe}});
         let members = JSON.parse({{ members | tojson | safe}});

@@ -114,10 +114,10 @@ img {
 #liveContainer {
     color: red;
     position: fixed;
-    right: 20px;
+    right: 4px;
     bottom: 12px;
     cursor: pointer;
-    font-size: 32px;
+    font-size: 44px;
     font-weight: bold;
     letter-spacing: 2px;
     -webkit-filter: drop-shadow(4px 4px 4px #222222);
@@ -129,10 +129,14 @@ img {
 
 #liveButton {
     display: inline-block;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     border-radius: 24px;
     background-color: red;
+}
+
+#streamTemplate, #collabTemplate {
+    display: none;
 }
 
 @media screen and (max-width: 600px) {
