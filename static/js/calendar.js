@@ -30,7 +30,10 @@ streams.forEach(stream => {
         // create day container
         dayContainer = dayTemplate.clone();
         dayContainer.attr("id", `${streamTime.getMonth() + 1}-${streamTime.getDate()}`);
-        dayContainer.find("#dayHeader").html(`${streamTime.getMonth() + 1}/${streamTime.getDate()}<br/>${days[streamTime.getDay()]}`);
+        let dayStr = `${streamTime.getMonth() + 1}/${streamTime.getDate()} - ${days[streamTime.getDay()]}`;
+        dayContainer.find(".dayHeader")
+            .html(dayStr.replace(" - ", "<br/>"))
+            .attr("title", dayStr);
         dayContainer.appendTo(calendarContainer);
     }
 
@@ -41,20 +44,20 @@ streams.forEach(stream => {
         .appendTo(dayContainer);
 
     // clickable link
-    let clickable = streamContainer.find(".clickable");
-    clickable.attr("href", stream.link);
+    let clickable = streamContainer.find(".clickable")
+        .attr("href", stream.link);
 
     // thumbnail
-    let thumbnail = clickable.find(".thumbnail");
-    thumbnail.attr("src", stream.thumbnail)
+    clickable.find(".thumbnail")
+        .attr("src", stream.thumbnail)
 
     // avatar
-    let avatar = clickable.find(".avatar");
-    avatar.attr("src", revMembers[stream.collaborators[0]])
+    clickable.find(".avatar")
+        .attr("src", revMembers[stream.collaborators[0]])
 
     // name
-    let mName = clickable.find(".mName");
-    mName.text(stream.host);
+    clickable.find(".mName")
+        .text(stream.host);
     
     // time
     let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
