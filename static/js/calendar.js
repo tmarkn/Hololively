@@ -58,11 +58,10 @@ streams.forEach(stream => {
     
     // time
     let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-    let lastSpacePos = timeStr.lastIndexOf(" ");
 
     let time = clickable.find(".streamTime")
     time.attr("title", timeStr)
-        .html(timeStr);
+        .text(timeStr);
 
     // live
     if (stream.live) {
