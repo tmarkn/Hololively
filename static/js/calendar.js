@@ -49,7 +49,7 @@ streams.forEach(stream => {
 
     // thumbnail
     clickable.find(".thumbnail")
-        .attr("src", stream.thumbnail)
+        .attr("src", stream.thumbnail.replace('/mqdefault.jpg', '/maxresdefault.jpg'))
 
     // avatar
     clickable.find(".avatar")
