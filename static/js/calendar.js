@@ -10,106 +10,50 @@ let days = [
 ];
 
 // variables
+let live = []
 let revMembers = swap(members);
-let live = [];
-let liveContainer = $("#liveContainer");
 let calendarContainer = $("#calendarContainer");
+let liveContainer = $("#liveContainer");
+let loadingContainer = $("#loadingContainer");
 let dayTemplate = $("#dayTemplate");
 let streamTemplate = $("#streamTemplate");
-let callobTemplate = $("#callobTemplate");
+let lastRefresh = Date.now();
 
-// build calendar
-// create objects
-streams.forEach(stream => {
-    let streamTime = parseTime(stream.time);
-    // find day container
-    let dayContainer = $(`#${streamTime.getMonth() + 1}-${streamTime.getDate()}`);
+// query
+var url = new URL(window.location.href);
+var query = url.searchParams.get("q");
+if (query === null) {
+    query = "";
+}
 
-    // create day container if not yet made
-    if (!dayContainer.length) {
-        // create day container
-        dayContainer = dayTemplate.clone();
-        dayContainer.attr("id", `${streamTime.getMonth() + 1}-${streamTime.getDate()}`);
-        let dayStr = `${streamTime.getMonth() + 1}/${streamTime.getDate()} - ${days[streamTime.getDay()]}`;
-        dayContainer.find(".dayHeader")
-            .html(dayStr.replace(" - ", "<br/>"))
-            .attr("title", dayStr);
-        dayContainer.appendTo(calendarContainer);
-    }
+$(document).ready(function() {
+    live = buildSchedule(streams);
+});
 
-    // container
-    let streamContainer = streamTemplate.clone();
-    streamContainer.attr("id", stream.link.slice(32, stream.link.length))
-        .attr("title", stream.host)
-        .appendTo(dayContainer);
-
-    // clickable link
-    let clickable = streamContainer.find(".clickable")
-        .attr("href", stream.link);
-
-    // thumbnail
-    clickable.find(".thumbnail")
-        .attr("src", stream.thumbnail.replace('/mqdefault.jpg', '/maxresdefault.jpg'))
-
-    // avatar
-    clickable.find(".avatar")
-        .attr("src", revMembers[stream.collaborators[0]])
-
-    // name
-    clickable.find(".mName")
-        .text(stream.host);
-    
-    // time
-    let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-
-    let time = clickable.find(".streamTime")
-    time.attr("title", timeStr)
-        .text(timeStr);
-
-    // live
-    if (stream.live) {
-        streamContainer.addClass("live");
-        live.push(`#${stream.link.slice(32, stream.link.length)}`);
-    }
-
-    // collaborators
-    // unique collaborators only
-    let collaborators = stream.collaborators.filter(onlyUnique);
-    
-    // prevent Choco subCh.
-    if (stream.host === "癒月ちょこ" || stream.host === "癒月ちょこSub") {
-        let chocoMainChIndex = collaborators.indexOf("癒月ちょこ (Yuzuki Choco)");
-        let chocoSubChIndex = collaborators.indexOf("癒月ちょこ subCh. (Yuzuki Choco subCh.)");
-        if (chocoMainChIndex >= 0 && chocoSubChIndex >= 0) {
-            collaborators.splice(chocoSubChIndex, 1);
-        }
-    }
-
-    // collab stream
-    let collabContainer = clickable.find(".collabContainer");
-    if (collaborators.length > 1) {
-        // grid
-        collabContainer.css("grid-template-columns", `repeat(${3 * collaborators.length + 1}, 1fr)`);
-
-        // create collab images
-        collaborators.forEach(function (collaborator, index) {
-            let collabor = $("#collabTemplate").clone();
-            collabor.attr("src", revMembers[collaborator].slice(0, revMembers[collaborator].indexOf("=")))
-                .attr("title", collaborator)
-                .css("grid-column", `${index * 3 + 1}/${index * 3 + 5}`);
-            collabor.appendTo(collabContainer);
-            collabor.removeAttr("id");
+// periodically refresh on focus
+$(window).on("focus", function () {
+    // difference in minutes is greater than 5
+    let now = Date.now();
+    let minutesPassed = (now - lastRefresh) / 1000 / 60
+    console.log(`Number of minutes passed: ${minutesPassed}`);
+    if (minutesPassed > 5) {
+        // update data
+        $.ajax({
+            url: "/api/" + query,
+            type: "GET",
+            cache: false,
+            success: function (data) {
+                loadingContainer.css("display", "flex");
+                streams = JSON.parse(data).streams;
+                lastRefresh = now;
+                live = buildSchedule(streams);
+                waitForElement(calendarContainer, function () {
+                    loadingContainer.css("display", "none");
+                });
+            }
         });
-    } else {
-        collabContainer.remove();
     }
 });
-// scroll to live
-if (live.length) {
-    waitForElement(live[0], function () {
-        liveContainer.css("transform", "scale(0.7)");
-    });
-}
 
 // live button animations
 liveContainer.on("mouseover", function () {
@@ -127,6 +71,109 @@ liveContainer.on("mousedown", function () {
         liveContainer.css("transform", "scale(0.7)");
     }, 100);
 });
+
+// create calendar
+function buildSchedule(streams) {
+    let newLive = [];
+    // build calendar
+    calendarContainer.empty();
+    // create objects
+    streams.forEach(stream => {
+        let streamTime = parseTime(stream.time);
+        // find day container
+        let dayContainer = $(`#${streamTime.getMonth() + 1}-${streamTime.getDate()}`);
+
+        // create day container if not yet made
+        if (!dayContainer.length) {
+            // create day container
+            dayContainer = dayTemplate.clone();
+            dayContainer.attr("id", `${streamTime.getMonth() + 1}-${streamTime.getDate()}`);
+            let dayStr = `${streamTime.getMonth() + 1}/${streamTime.getDate()} - ${days[streamTime.getDay()]}`;
+            dayContainer.find(".dayHeader")
+                .html(dayStr.replace(" - ", "<br/>"))
+                .attr("title", dayStr);
+            dayContainer.appendTo(calendarContainer);
+        }
+
+        // container
+        let streamContainer = streamTemplate.clone();
+        let id = stream.link.slice(32, stream.link.length);
+        streamContainer.attr("id", id)
+            .attr("title", stream.host)
+            .appendTo(dayContainer);
+
+        // clickable link
+        let clickable = streamContainer.find(".clickable")
+            .attr("href", stream.link);
+
+        // thumbnail
+        clickable.find(".thumbnail")
+            .attr("src", stream.thumbnail.replace('/mqdefault.jpg', '/maxresdefault.jpg'))
+
+        // avatar
+        clickable.find(".avatar")
+            .attr("src", revMembers[stream.collaborators[0]])
+
+        // name
+        clickable.find(".mName")
+            .text(stream.host);
+        
+        // time
+        let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+        let time = clickable.find(".streamTime")
+        time.attr("title", timeStr)
+            .text(timeStr);
+
+        // live
+        if (stream.live) {
+            streamContainer.addClass("live");
+            newLive.push(`#${stream.link.slice(32, stream.link.length)}`);
+        }
+
+        // collaborators
+        // unique collaborators only
+        let collaborators = stream.collaborators.filter(onlyUnique);
+        
+        // prevent Choco subCh.
+        if (stream.host === "癒月ちょこ" || stream.host === "癒月ちょこSub") {
+            let chocoMainChIndex = collaborators.indexOf("癒月ちょこ (Yuzuki Choco)");
+            let chocoSubChIndex = collaborators.indexOf("癒月ちょこ subCh. (Yuzuki Choco subCh.)");
+            if (chocoMainChIndex >= 0 && chocoSubChIndex >= 0) {
+                collaborators.splice(chocoSubChIndex, 1);
+            }
+        }
+
+        // collab stream
+        let collabContainer = clickable.find(".collabContainer");
+        if (collaborators.length > 1) {
+            // grid
+            collabContainer.css("grid-template-columns", `repeat(${3 * collaborators.length + 1}, 1fr)`);
+
+            // create collab images
+            collaborators.forEach(function (collaborator, index) {
+                let collabor = $("#collabTemplate").clone();
+                collabor.attr("src", revMembers[collaborator].slice(0, revMembers[collaborator].indexOf("=")))
+                    .attr("title", collaborator)
+                    .css("grid-column", `${index * 3 + 1}/${index * 3 + 5}`);
+                collabor.appendTo(collabContainer);
+                collabor.removeAttr("id");
+            });
+        } else {
+            collabContainer.remove();
+        }
+    });
+
+    // scroll to live
+    if (newLive.length) {
+        waitForElement(newLive[0], function () {
+            liveContainer.css("transform", "scale(0.7)");
+        });
+    } else {
+        liveContainer.css("transform", "scale(0)");
+    }
+    return newLive;
+}
 
 // swap dictionary key and values
 function swap(dict) {

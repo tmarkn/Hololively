@@ -140,6 +140,26 @@ img {
     display: none;
 }
 
+#loadingContainer {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    align-items:center;
+    justify-content:center;
+    opacity: 30%;
+}
+#loading {
+    vertical-align: middle;
+    animation-name:            rotate; 
+    animation-duration:        0.65s; 
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
 @media screen and (max-width: 600px) {
     #container {
         margin-top: 8em;
