@@ -9,6 +9,12 @@ let days = [
     "SAT (土)"
 ];
 
+// resolutions
+let res = [
+    "sddefault.jpg",
+
+]
+
 // variables
 let live = []
 let revMembers = swap(members);
@@ -26,7 +32,7 @@ if (query === null) {
     query = "";
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     live = buildSchedule(streams);
 });
 
@@ -34,8 +40,7 @@ $(document).ready(function() {
 $(window).on("focus", function () {
     // difference in minutes is greater than 5
     let now = Date.now();
-    let minutesPassed = (now - lastRefresh) / 1000 / 60
-    console.log(`Number of minutes passed: ${minutesPassed}`);
+    let minutesPassed = (now - lastRefresh) / 1000 / 60;
     if (minutesPassed > 5) {
         // update data
         $.ajax({
@@ -54,6 +59,16 @@ $(window).on("focus", function () {
         });
     }
 });
+
+// image does not exist
+function checkImage(ele) {
+    //
+    if (ele.naturalWidth === 120 && ele.naturalHeight === 90) {
+        let oldThumbnail = $(ele).attr("src");
+        $(ele).attr("src", oldThumbnail.replace('/maxresdefault.jpg', '/hqdefault.jpg'));
+    }
+    $(ele).off('load');
+}
 
 // live button animations
 liveContainer.on("mouseover", function () {
@@ -117,7 +132,7 @@ function buildSchedule(streams) {
         // name
         clickable.find(".mName")
             .text(stream.host);
-        
+
         // time
         let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
 
@@ -134,7 +149,7 @@ function buildSchedule(streams) {
         // collaborators
         // unique collaborators only
         let collaborators = stream.collaborators.filter(onlyUnique);
-        
+
         // prevent Choco subCh.
         if (stream.host === "癒月ちょこ" || stream.host === "癒月ちょこSub") {
             let chocoMainChIndex = collaborators.indexOf("癒月ちょこ (Yuzuki Choco)");
@@ -226,4 +241,17 @@ function scrollToLive() {
 
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
+}
+
+function imageExists(url, callback) {
+    var img = new Image();
+    img.onload = function () {
+        if (img.naturalHeight === 90 && img.naturalWidth === 120) {
+            callback(false, url);
+        } else {
+            callback(true, url);
+        }
+    };
+    img.onerror = function () { callback(false, url) };
+    img.src = url;
 }

@@ -7,7 +7,7 @@
         <span id="liveButton"></span>
     </div>
     <div id="loadingContainer">
-        <img id="loading" src="{{url_for('static', filename='images/loading.png')}}">
+        <img id="loading" src="{{url_for('static', filename='images/loadingWhite.png')}}">
     </div>
     <div id="dayTemplate" class="dayContainer">
         <h1 class="dayHeader"></h1>
@@ -15,7 +15,7 @@
     <div id="streamTemplate" class="streamContainer">
         <a class="clickable" target="_blank">
             <div class="topContainer">
-                <img class="thumbnail" loading="lazy">
+                <img class="thumbnail" loading="lazy" onload=checkImage(this)>
                 <div class="textContainer">
                     <h2 class="memberName">
                         <img class="avatar" loading="lazy"><span class="mName"></span><span class="liveDot"></span>
