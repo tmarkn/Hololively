@@ -1,0 +1,1 @@
+$.mobile.loading().hide();
