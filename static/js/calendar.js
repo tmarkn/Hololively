@@ -38,10 +38,26 @@ $(document).ready(function () {
 
 // periodically refresh on focus
 $(window).on("focus", function () {
+    checkRefresh(5);
+});
+
+$(window).on("scroll", function () {
+    clearTimeout($.data(this, 'scrollTimer'));
+    $.data(this, 'scrollTimer', setTimeout(function() {
+        checkRefresh(5)
+    }, 100));
+});
+
+$(window).on("click", function () {
+    checkRefresh(5);
+});
+
+function checkRefresh(targetMinutes) {
     // difference in minutes is greater than 5
     let now = Date.now();
     let minutesPassed = (now - lastRefresh) / 1000 / 60;
-    if (minutesPassed > 5) {
+    console.log(minutesPassed);
+    if (minutesPassed > minutesPassed) {
         // update data
         $.ajax({
             url: "/api/" + query,
@@ -50,15 +66,15 @@ $(window).on("focus", function () {
             success: function (data) {
                 loadingContainer.css("display", "flex");
                 streams = JSON.parse(data).streams;
-                lastRefresh = now;
                 live = buildSchedule(streams);
+                lastRefresh = now;
                 waitForElement(calendarContainer, function () {
                     loadingContainer.css("display", "none");
                 });
             }
         });
     }
-});
+};
 
 // image does not exist
 function checkImage(ele) {
