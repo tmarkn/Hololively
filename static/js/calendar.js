@@ -24,6 +24,7 @@ let loadingContainer = $("#loadingContainer");
 let dayTemplate = $("#dayTemplate");
 let streamTemplate = $("#streamTemplate");
 let lastRefresh = Date.now();
+let scrollLock = false;
 
 // query
 var url = new URL(window.location.href);
@@ -56,8 +57,7 @@ function checkRefresh(targetMinutes) {
     // difference in minutes is greater than 5
     let now = Date.now();
     let minutesPassed = (now - lastRefresh) / 1000 / 60;
-    console.log(minutesPassed);
-    if (minutesPassed > minutesPassed) {
+    if (minutesPassed > targetMinutes) {
         // update data
         $.ajax({
             url: "/api/" + query,
@@ -74,7 +74,7 @@ function checkRefresh(targetMinutes) {
             }
         });
     }
-};
+}
 
 // image does not exist
 function checkImage(ele) {
