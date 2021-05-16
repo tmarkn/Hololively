@@ -137,7 +137,7 @@ img {
     background-color: red;
 }
 
-#streamTemplate, #collabTemplate {
+#streamTemplate, #collabTemplate, #dayTemplate {
     display: none;
 }
 
@@ -166,10 +166,10 @@ img {
         margin-top: 8em;
     }
     .topContainer {
-        height: 148px;
+        height: 124.5px;
     }
     .thumbnail {
-        max-width: 240px;
+        max-width: 200px;
     }
     .memberName {
         font-size: 1em;
@@ -182,5 +182,17 @@ img {
     }
     .collabContainer {
         height: 75px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .topContainer {
+        height: 102px;
+    }
+    .thumbnail {
+        max-width: 160px;
+    }
+    .streamTime {
+        font-size: 20px;
     }
 }
