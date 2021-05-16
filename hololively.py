@@ -1,10 +1,15 @@
 import json
+import markdown
 from api import API
 from flask import Flask, render_template, url_for, request
 app = Flask(__name__, static_url_path='/static')
 
 with open('static/json/members.json', 'r', encoding="utf-8") as f:
     members = f.read()
+with open('about.md', 'r', encoding="utf-8") as f:
+    aboutText = f.read()
+with open('README.md', 'r', encoding="utf-8") as f:
+    documentationText = f.read()
 
 @app.route('/')
 @app.route('/home/')
@@ -16,7 +21,7 @@ def home():
 
 @app.route('/about/')
 def about():
-    return render_template('about.html', title='about')
+    return render_template('about.html', title='about', aboutText=markdown.markdown(aboutText))
 
 @app.route('/api/')
 @app.route('/api/<query>')
@@ -51,7 +56,7 @@ def api(query = ''):
 
 @app.route('/docs/')
 def docs():
-    return render_template('docs.html', title='Documentation')
+    return render_template('docs.html', title='Documentation', documentationText=markdown.markdown(documentationText))
 
 @app.errorhandler(404)
 def page_not_found(error):

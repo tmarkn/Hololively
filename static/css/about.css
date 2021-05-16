@@ -1,0 +1,7 @@
+#container {
+    padding: 2em;
+    padding-top: 0;
+}
+#container a {
+    color: var(--main-accent-color);
+}
