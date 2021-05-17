@@ -17,13 +17,13 @@ setTimeout(function() {
 }, 300);
 
 navBarContainer.on("mouseenter", function() {
-    if (!mobile && $(window).width() > 600) {
+    if (!mobile && window.innerWidth > 600) {
         showNav();
     }
 });
 
 navBarContainer.on("mouseleave", function() {
-    if (!mobile && $(window).width() > 600) {
+    if (!mobile && window.innerWidth > 600) {
         hideNav();
     }
 });
