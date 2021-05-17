@@ -4,8 +4,6 @@ This is the Hololively app written and maintained by [Tmarkn](http://github.com/
 
 The project can be found at [http://github.com/Tmarkn/hololively](http://github.com/Tmarkn/hololively).
 
-You can find the official application hosted at [http://hololively.com/](http://hololively.com/).
-
 # Rights
 
 This API works off of webscraping the [https://schedule.hololive.tv/lives/](https://schedule.hololive.tv/lives/) site for data. 

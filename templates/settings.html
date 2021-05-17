@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/settings.css')}}">
+    <h1>Settings</h1>
+    <div id="settingsContainer">
+        <div class="setContainer">
+            <p>Accept Cookies</p>
+            <label class="switch">
+                <input class="switchButton" id="acceptCookies" type="checkbox">
+                <span class="slider"></span>
+            </label> 
+        </div>
+        <div class="setContainer">
+            <p>Live in Nav Bar</p>
+            <label class="switch">
+                <input class="switchButton cookButton" id="liveInNav" type="checkbox">
+                <span class="slider"></span>
+            </label> 
+        </div>
+        <div class="setContainer">
+            <p>Dark Mode</p>
+            <label class="switch">
+                <input class="switchButton cookButton" id="darkMode" type="checkbox">
+                <span class="slider"></span>
+            </label> 
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock content %}

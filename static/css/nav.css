@@ -1,5 +1,5 @@
 :root {
-    --nav-width: 1000px;
+    --nav-width: 800px;
 }
 
 nav {
@@ -34,11 +34,18 @@ nav {
     display: flex;
     align-items: center;
 }
+.lightMode #logoText {
+    text-shadow: -6px 6px #e2e2e2;
+}
 #logo {
     height: 60%;
     margin-right: 4px;
     -webkit-filter: drop-shadow(-6px 6px black);
     filter: drop-shadow(-6px 6px black);
+}
+.lightMode #logo {
+    -webkit-filter: drop-shadow(-6px 6px #e2e2e2);
+    filter: drop-shadow(-6px 6px #e2e2e2);
 }
 #mobileButton {
     filter: invert(64%) sepia(11%) saturate(5402%) hue-rotate(167deg) brightness(104%) contrast(105%);
@@ -55,7 +62,7 @@ nav {
 #navBarContainer {
     background-color: var(--main-accent-color);
     padding: 16px 32px;
-    border-bottom: 4px solid white;
+    border-bottom: 4px solid var(--main-text-color);
 }
 #navBar {
     max-width: var(--nav-width);
@@ -79,7 +86,7 @@ nav {
     justify-content: space-between;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
     #navBarContainer {
         padding: 10px;
     }

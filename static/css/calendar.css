@@ -24,17 +24,33 @@ img {
 }
 
 .streamContainer {
-    border: 4px solid var(--main-bg-color);
+    border: 4px solid black;
     background-color: black;
     max-width: 800px;
     margin: auto;
     margin-bottom: 24px;
-    transition: border linear 0.15s, -webkit-filter linear 0.3s;
+    transition: border linear 0.15s, -webkit-filter linear 0.3s, filter linear 0.3s;
+}
+.lightMode .streamContainer {
+    border: 4px solid #e2e2e2;
+    background-color: #e2e2e2;
+}
+.live {
+    border: 4px solid #300000;
+    background-color: #300000;
+}
+.lightMode .live {
+    border: 4px solid #ffbbbb;
+    background-color: #ffbbbb;
 }
 .streamContainer:hover {
     border: 4px solid var(--main-accent-color);
     -webkit-filter: brightness(115%);
     filter: brightness(115%);
+}
+.lightMode .streamContainer:hover {
+    -webkit-filter: brightness(100%) contrast(140%);
+    filter: brightness(100%) contrast(140%);
 }
 .clickable {
     text-decoration: none;
@@ -46,9 +62,6 @@ img {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-}
-.live{
-    background-color: #300000;
 }
 .thumbnail {
     flex: 1;
@@ -70,7 +83,7 @@ img {
 }
 .memberName {
     flex: 1;
-    color: white;
+    color: var(--main-text-color);
     margin: 4px;
 }
 .liveDot {
@@ -128,16 +141,24 @@ img {
 }
 
 #liveContainer {
+    position: fixed;
     color: red;
     cursor: pointer;
     font-size: 40px;
     font-weight: bold;
+    bottom: 4px;
+    right: 4px;
+    margin-top: 6px;
     letter-spacing: 2px;
     -webkit-filter: drop-shadow(4px 4px 4px #222222);
     filter: drop-shadow(4px 4px 4px #222222);
     transform: scale(0);
     transform-origin: center center;
     transition: transform 0.2s ease;
+}
+
+#liveContainer.liveInNav {
+    position: relative;
 }
 
 #liveButton {
@@ -172,7 +193,7 @@ img {
     animation-timing-function: linear;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
     #container {
         margin-top: 6em;
     }

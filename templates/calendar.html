@@ -7,7 +7,7 @@
         <span id="liveButton"></span>
     </div>
     <div id="loadingContainer">
-        <img id="loading" src="{{url_for('static', filename='images/loadingWhite.png')}}">
+        <img id="loading" src="{{ url_for('static', filename='images/loadingWhite.png') }}">
     </div>
     <div id="dayTemplate" class="dayContainer">
         <h1 class="dayHeader"></h1>
@@ -31,5 +31,5 @@
         let streams = JSON.parse({{ streams | tojson | safe}});
         let members = JSON.parse({{ members | tojson | safe}});
     </script>
-    <script type="text/javascript" src="{{url_for('static', filename='js/calendar.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/calendar.js') }}"></script>
 {% endblock content %}

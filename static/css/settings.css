@@ -1,0 +1,68 @@
+#container {
+    padding: 2em;
+    padding-top: 0;
+}
+
+.setContainer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 24px;
+    align-items: center;
+}
+.setContainer:not(:last-child) {
+    border-bottom: black solid 2px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 32px;
+}
+.switch input {
+    height: 0;
+    width: 0;
+}
+
+.slider {
+    border-radius: 32px;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+}
+.slider:before {
+    border-radius: 50%;
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    background-color: white;
+    left: 6px;
+    bottom: 6px;
+    -webkit-transition: transform .3s;
+    transition: transform .3s;
+}
+
+input:checked + .slider {
+  background-color: var(--main-accent-color);
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+
+.greyed {
+    web-filter: sepia(100%) saturate(50%) hue-rotate(180deg) brightness(65%);
+    filter: sepia(100%) saturate(50%) hue-rotate(180deg) brightness(65%);
+}
+
+@media screen and (max-width: 800px) {
+    .setContainer {
+        font-size: 20px;
+    }
+}

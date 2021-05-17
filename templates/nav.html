@@ -1,8 +1,8 @@
 <nav>
     <div id="navFirst">
-        <a id="logoText" title="HoloLively" href="/home/"><img id="logo" src="{{ url_for('static', filename='images/hologo.png')}}">HoloLively</a>
+        <a id="logoText" title="HoloLively" href="/home/"><img id="logo" src="{{ url_for('static', filename='images/hologo.png') }}">HoloLively</a>
         <div id="navSpace"></div>
-        <img id="mobileButton" src="{{ url_for('static', filename='images/menu.png')}}">
+        <img id="mobileButton" src="{{ url_for('static', filename='images/menu.png') }}">
     </div>
     
     <div id="navBarContainer">
@@ -13,10 +13,11 @@
                 <a id="api" href="/api/" title="API">API</a>
                 <a id="apiEN" href="/api/english" title="English API">EN-API</a>
                 <a id="about" href="/about/" title="About">ABOUT</a>
+                <a id="settings" href="/settings/" title="Settings">SETTINGS</a>
             </div>
         </div>
     </div>
     <script> 
-        var mobileUrl = "{{url_for('static', filename='css/mobileNav.css')}}";
+        var mobileUrl = "{{url_for('static', filename='css/mobileNav.css') }}";
     </script>
 </nav>

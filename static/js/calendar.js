@@ -34,6 +34,9 @@ if (query === null) {
 
 $(document).ready(function () {
     buildSchedule(streams);
+    if (liveInNav === true) {
+        liveContainer.addClass("liveInNav");
+    }
     liveContainer.insertBefore(mobileButton);
 });
 
