@@ -1,6 +1,6 @@
 # Privacy Policy of Hololively
 
-Hololively operates the Hololively.com website, which provides the SERVICE.
+Tmarkn operates the Hololively.com website, which provides the SERVICE.
 
 This page is used to inform website visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service, the Hololively website.
 
