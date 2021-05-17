@@ -18,6 +18,9 @@ nav {
     align-items: center;
     justify-content: space-between;
 }
+#navSpace {
+    flex: 1;
+}
 #logoText {
     font-family: Bebas Neue;
     font-size: 2em;
