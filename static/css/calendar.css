@@ -19,7 +19,7 @@ img {
     margin: 0;
     padding: .5em 0;
     position: sticky;
-    top: 4.3em;
+    top: 118px;
     background-color: var(--main-bg-color);
     z-index: 1;
 }
@@ -130,11 +130,8 @@ img {
 
 #liveContainer {
     color: red;
-    position: fixed;
-    right: 4px;
-    bottom: 12px;
     cursor: pointer;
-    font-size: 44px;
+    font-size: 40px;
     font-weight: bold;
     letter-spacing: 2px;
     -webkit-filter: drop-shadow(4px 4px 4px #222222);
@@ -146,8 +143,8 @@ img {
 
 #liveButton {
     display: inline-block;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 24px;
     background-color: red;
 }
@@ -181,7 +178,7 @@ img {
         margin-top: 6em;
     }
     .dayHeader {
-        top: 4.25em;
+        top: 106px;
         font-size: 24px;
     }
     .topContainer {
@@ -205,6 +202,9 @@ img {
 }
 
 @media screen and (max-width: 400px) {
+    .streamContainer {
+        margin-bottom: 12px;
+    }
     .topContainer {
         height: 102px;
     }
@@ -213,5 +213,12 @@ img {
     }
     .streamTime {
         font-size: 20px;
+    }
+    #liveContainer {
+        font-size: 32px;
+    }
+    #liveButton {
+        width: 20px;
+        height: 20px;
     }
 }

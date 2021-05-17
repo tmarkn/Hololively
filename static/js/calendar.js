@@ -34,6 +34,7 @@ if (query === null) {
 
 $(document).ready(function () {
     buildSchedule(streams);
+    liveContainer.insertBefore(mobileButton);
 });
 
 // periodically refresh on focus

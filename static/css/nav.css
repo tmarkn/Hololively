@@ -10,12 +10,13 @@ nav {
     z-index: 2;
 }
 #navFirst {
+    height: 50px;
     background-color: var(--main-bg-color);
     max-width: var(--nav-width);
     margin: 1.5em auto 0.5em;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    vertical-align: bottom;
 }
 #logoText {
     font-family: Bebas Neue;
@@ -27,6 +28,8 @@ nav {
     margin-left: 0.5em;
     text-shadow: -6px 6px black;
     height: 1.5em;
+    display: flex;
+    align-items: center;
 }
 #logo {
     height: 60%;
@@ -86,5 +89,11 @@ nav {
     #navBar a {
         margin: 12px;
         font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    #logoText {
+        font-size: 1.5em;
     }
 }
