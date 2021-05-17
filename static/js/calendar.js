@@ -259,6 +259,7 @@ function showNotLive(animationTime) {
     // animate
     $(".dayHeader").slideDown(animationTime);
     $(".streamContainer:not(.live):not(#streamTemplate)").slideDown(animationTime);
+    $(window).scrollTop(0);
 }
 
 function hideNotLive(animationTime) {
@@ -272,6 +273,7 @@ function hideNotLive(animationTime) {
     $(".dayContainer").not(
         $(".live").parent()
     ).find(".dayHeader").slideUp(animationTime);
+    $(window).scrollTop(0);
 }
 
 function onlyUnique(value, index, self) {
