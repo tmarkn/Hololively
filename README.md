@@ -31,3 +31,10 @@ While suggestions are appreciated, pull requests will not be accepted
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+## Todo
+- Better Menus
+- Context Menu Options
+- Different Languages
+  - Translate Names
+- Different Timezones
