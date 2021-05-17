@@ -110,7 +110,7 @@ function buildSchedule(streams) {
     calendarContainer.empty();
     // create objects
     streams.forEach(stream => {
-        let streamTime = parseTime(stream.time);
+        let streamTime = new Date(stream.time);
         // find day container
         let dayContainer = $(`#${streamTime.getMonth() + 1}-${streamTime.getDate()}`);
 
@@ -227,12 +227,6 @@ function waitForElement(elementPath, callBack) {
             waitForElement(elementPath, callBack);
         }
     }, 500);
-}
-
-// parse time and return date object
-function parseTime(timeString) {
-    timeStr = timeString.slice(0, 10) + "T" + timeString.slice(11, timeString.length);
-    return new Date(timeStr);
 }
 
 // toggle live elements

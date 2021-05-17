@@ -7,6 +7,8 @@ from dateutil import tz
 import pytz
 from bs4 import BeautifulSoup as bs
 
+from json_serial import json_serial
+
 from_zone = tz.gettz('Asia/Tokyo')
 
 with open('static/json/members.json', 'r', encoding='utf-8') as f:
@@ -89,7 +91,7 @@ def API(query):
             # Stream
             data.append(Stream(link, host, time, thumbnail, collaborators, live))
 
-    return json.dumps([x.__dict__ for x in data], default=str, ensure_ascii=False)
+    return json.dumps([x.__dict__ for x in data], default=json_serial, ensure_ascii=False)
 
-# with open('test.json', 'w', encoding='utf-8') as f:
-#     f.write(API('english'))
+if __name__ == '__main__':
+    print(API(''))
