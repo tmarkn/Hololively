@@ -16,7 +16,6 @@ let res = [
 ]
 
 // variables
-let live = [];
 let revMembers = swap(members);
 let calendarContainer = $("#calendarContainer");
 let liveContainer = $("#liveContainer");
@@ -34,7 +33,7 @@ if (query === null) {
 }
 
 $(document).ready(function () {
-    live = buildSchedule(streams);
+    buildSchedule(streams);
 });
 
 // periodically refresh on focus
@@ -66,7 +65,7 @@ function checkRefresh(targetMinutes) {
             success: function (data) {
                 loadingContainer.css("display", "flex");
                 streams = JSON.parse(data).streams;
-                live = buildSchedule(streams);
+                buildSchedule(streams);
                 lastRefresh = now;
                 waitForElement(calendarContainer, function () {
                     loadingContainer.css("display", "none");
@@ -207,8 +206,6 @@ function buildSchedule(streams) {
         liveContainer.css("transform", "scale(0)");
         showNotLive();
     }
-
-    return newLive;
 }
 
 // swap dictionary key and values
