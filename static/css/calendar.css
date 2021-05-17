@@ -1,3 +1,7 @@
+#container {
+    margin-top: 7em;
+}
+
 img {
     outline: 0 !important;
 }
@@ -10,7 +14,14 @@ img {
     text-align: center;
 }
 .dayHeader {
+    font-size: 26px;
     text-align: center;
+    margin: 0;
+    padding: .5em 0;
+    position: sticky;
+    top: 4.3em;
+    background-color: var(--main-bg-color);
+    z-index: 1;
 }
 
 .streamContainer {
@@ -90,18 +101,22 @@ img {
     height: 100%;
     grid-row: 1;
     background-color: white;
-    -webkit-clip-path: polygon(25% 0, 100% 0%, 75% 100%, 0% 100%);
-    clip-path: polygon(25% 0, 100% 0%, 75% 100%, 0% 100%);
+    -webkit-clip-path: polygon(25% 0, 100% 0, 75% 100%, 0 100%);
+    clip-path: polygon(25% 0, 100% 0, 75% 100%, 0 100%);
     -webkit-filter: brightness(85%);
     filter: brightness(85%);
 }
 .collabImg:first-child {
-    -webkit-clip-path: polygon(0% 0, 100% 0%, 75% 100%, 0% 100%);
-    clip-path: polygon(0% 0, 100% 0%, 75% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0 0, 100% 0%, 75% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
 }
 .collabImg:last-child {
-    -webkit-clip-path: polygon(25% 0, 100% 0%, 100% 100%, 0% 100%);
-    clip-path: polygon(25% 0, 100% 0%, 100% 100%, 0% 100%);
+    -webkit-clip-path: polygon(25% 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(25% 0, 100% 0, 100% 100%, 0 100%);
+}
+.collabImg:only-child {
+    -webkit-clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 .liveDot {
     display: none;
@@ -163,7 +178,11 @@ img {
 
 @media screen and (max-width: 600px) {
     #container {
-        margin-top: 8em;
+        margin-top: 6em;
+    }
+    .dayHeader {
+        top: 4.25em;
+        font-size: 24px;
     }
     .topContainer {
         height: 124.5px;

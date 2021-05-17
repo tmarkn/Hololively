@@ -16,7 +16,7 @@ let res = [
 ]
 
 // variables
-let live = []
+let live = [];
 let revMembers = swap(members);
 let calendarContainer = $("#calendarContainer");
 let liveContainer = $("#liveContainer");
@@ -24,7 +24,7 @@ let loadingContainer = $("#loadingContainer");
 let dayTemplate = $("#dayTemplate");
 let streamTemplate = $("#streamTemplate");
 let lastRefresh = Date.now();
-let scrollLock = false;
+let onlyLiveShown = false;
 
 // query
 var url = new URL(window.location.href);
@@ -44,7 +44,7 @@ $(window).on("focus", function () {
 
 $(window).on("scroll", function () {
     clearTimeout($.data(this, 'scrollTimer'));
-    $.data(this, 'scrollTimer', setTimeout(function() {
+    $.data(this, 'scrollTimer', setTimeout(function () {
         checkRefresh(5)
     }, 100));
 });
@@ -97,7 +97,7 @@ liveContainer.on("mouseleave", function () {
 
 liveContainer.on("mousedown", function () {
     $(this).css("transform", "scale(1)");
-    scrollToLive();
+    toggleLive();
     window.setTimeout(function () {
         liveContainer.css("transform", "scale(0.7)");
     }, 100);
@@ -115,10 +115,11 @@ function buildSchedule(streams) {
         let dayContainer = $(`#${streamTime.getMonth() + 1}-${streamTime.getDate()}`);
 
         // create day container if not yet made
+        let date = `${streamTime.getMonth() + 1}-${streamTime.getDate()}`
         if (!dayContainer.length) {
             // create day container
             dayContainer = dayTemplate.clone();
-            dayContainer.attr("id", `${streamTime.getMonth() + 1}-${streamTime.getDate()}`);
+            dayContainer.attr("id", date);
             let dayStr = `${streamTime.getMonth() + 1}/${streamTime.getDate()} - ${days[streamTime.getDay()]}`;
             dayContainer.find(".dayHeader")
                 .html(dayStr.replace(" - ", "<br/>"))
@@ -150,7 +151,7 @@ function buildSchedule(streams) {
             .text(stream.host);
 
         // time
-        let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+        let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZoneName: 'short' });
 
         let time = clickable.find(".streamTime")
         time.attr("title", timeStr)
@@ -197,12 +198,16 @@ function buildSchedule(streams) {
 
     // scroll to live
     if (newLive.length) {
-        waitForElement(newLive[0], function () {
-            liveContainer.css("transform", "scale(0.7)");
-        });
+        liveContainer.css("transform", "scale(0.7)");
+        if (onlyLiveShown) {
+            showNotLive(0);
+            hideNotLive(0);
+        }
     } else {
         liveContainer.css("transform", "scale(0)");
+        showNotLive();
     }
+
     return newLive;
 }
 
@@ -232,27 +237,43 @@ function parseTime(timeString) {
     return new Date(timeStr);
 }
 
-// scroll to live element
-let liveIndex = 0;
-function scrollToLive() {
-    // there is a live stream
-    if (live.length) {
-        // calculate time to scroll to element
-        let scrollPos = $(live[liveIndex]).offset().top - 120;
-        let scrollTime = Math.abs($(document).scrollTop() - scrollPos) / 4;
-        if (scrollTime < 250) {
-            scrollTime = 250;
-        } else if (scrollTime > 550) {
-            scrollTime = 550;
-        }
-        // animate
-        $('html, body').stop();
-        $('html, body').animate({
-            scrollTop: scrollPos
-        }, scrollTime, "swing");
+// toggle live elements
+function toggleLive(animationTime) {
+    // optional animation time
+    if (animationTime === null) {
+        animationTime = 300;
     }
-    // move to next live stream
-    liveIndex = (liveIndex + 1) % live.length;
+    // activate correct function based on variable
+    if (onlyLiveShown) {
+        showNotLive(animationTime);
+    } else {
+        hideNotLive(animationTime);
+    }
+    // toggle variable
+    onlyLiveShown = !onlyLiveShown;
+}
+
+function showNotLive(animationTime) {
+    // optional animation time
+    if (animationTime === null) {
+        animationTime = 300;
+    }
+    // animate
+    $(".dayHeader").slideDown(animationTime);
+    $(".streamContainer:not(.live):not(#streamTemplate)").slideDown(animationTime);
+}
+
+function hideNotLive(animationTime) {
+    // optional animation time
+    if (animationTime === null) {
+        animationTime = 300;
+    }
+    //animate
+    $(".streamContainer:not(.live)").slideUp(animationTime);
+    // get all dayContainers and subtract the ones with live elements
+    $(".dayContainer").not(
+        $(".live").parent()
+    ).find(".dayHeader").slideUp(animationTime);
 }
 
 function onlyUnique(value, index, self) {
