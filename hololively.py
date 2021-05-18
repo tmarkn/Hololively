@@ -1,6 +1,7 @@
 import json
 import markdown
 from api import API
+from datetime import datetime, timezone
 from flask import Flask, render_template, url_for, request
 app = Flask(__name__, static_url_path='/static')
 
@@ -44,6 +45,7 @@ def api(query = ''):
             status = 400,
             response = '{' +
                 '"status": 400, ' + 
+                f'"timestamp": "{datetime.now(timezone.utc).isoformat()}",' + 
                 '"message": "Invalid or incomplete request. Please double check the request documentation"' +
             '}'
         )
@@ -52,6 +54,7 @@ def api(query = ''):
             status = 200,
             response = '{' +
                 '"status": 200, ' +
+                f'"timestamp": "{datetime.now(timezone.utc).isoformat()}",' + 
                 f'"streams": {API(query=query)}' +
             '}'
         )

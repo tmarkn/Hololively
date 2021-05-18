@@ -4,7 +4,6 @@ import re
 import requests
 from dateutil import tz
 
-import pytz
 from bs4 import BeautifulSoup as bs
 
 from json_serial import json_serial
