@@ -34,6 +34,6 @@ function removeCookie(name) {
 function clearCookies() {
     var cookies = document.cookie.split("; ");
     cookies.forEach(cookie => {
-        removeCookie(cookies[cookie]);
+        removeCookie(cookie);
     });
 }
