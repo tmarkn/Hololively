@@ -20,7 +20,7 @@ We want to inform you that whenever you visit our Service, we collect informatio
 
 Cookies are files with small amount of data that is commonly used an anonymous unique identifier. These are sent to your browser from the website that you visit and are stored on your computer’s hard drive.
 
-Our website uses these cookies to improve our service. You have the option to either accept or refuse these cookies, and know when a cookie is being sent to your computer and can managed from the settings panel. If you choose to refuse our cookies, you may not be able to use some portions of our Service.
+Our website uses these cookies to improve our service. You have the option to either accept or refuse these cookies, and know when a cookie is being sent to your computer and can managed from the [settings page](http://hololively.com/settings/). If you choose to refuse our cookies, you may not be able to use some portions of our Service.
 
 For more general information on cookies, please read ["What Are Cookies"](https://www.privacypolicyonline.com/what-are-cookies/).
 
