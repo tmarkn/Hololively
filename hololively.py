@@ -5,8 +5,8 @@ from datetime import datetime, timezone
 from flask import Flask, render_template, url_for, request
 app = Flask(__name__, static_url_path='/static')
 
-with open('static/json/members.json', 'r', encoding="utf-8") as f:
-    members = f.read()
+with open('static/json/memberPhotos.json', 'r', encoding="utf-8") as f:
+    memberPhotos = f.read()
 with open('about.md', 'r', encoding="utf-8") as f:
     aboutText = f.read()
 with open('README.md', 'r', encoding="utf-8") as f:
@@ -20,7 +20,7 @@ def home():
     query = request.args.get('q')
     if not query:
         query = ''
-    return render_template('calendar.html', title='Home', streams=API(query=query), members=members)
+    return render_template('calendar.html', title='Home', streams=API(query=query), memberPhotos=memberPhotos)
 
 @app.route('/about/')
 @app.route('/policy/')

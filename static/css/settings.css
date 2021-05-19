@@ -61,6 +61,11 @@ input:checked + .slider:before {
     filter: sepia(100%) saturate(50%) hue-rotate(180deg) brightness(65%);
 }
 
+.greyed > #timeZoneDrop{
+    web-filter: brightness(200%);
+    filter: brightness(200%);
+}
+
 @media screen and (max-width: 800px) {
     .setContainer {
         font-size: 20px;

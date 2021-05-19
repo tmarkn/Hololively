@@ -16,7 +16,7 @@ let res = [
 ]
 
 // variables
-let revMembers = swap(members);
+let revMemberPhotos = swap(memberPhotos);
 let calendarContainer = $("#calendarContainer");
 let liveContainer = $("#liveContainer");
 let loadingContainer = $("#loadingContainer");
@@ -113,17 +113,21 @@ function buildSchedule(streams) {
     calendarContainer.empty();
     // create objects
     streams.forEach(stream => {
-        let streamTime = new Date(stream.time);
-        // find day container
-        let dayContainer = $(`#${streamTime.getMonth() + 1}-${streamTime.getDate()}`);
+        // set time zone
+        let streamTime = moment(stream.time).tz(moment.tz.guess());
+        if (tz !== null) {
+            streamTime = moment(stream.time).tz(tz);
+        }
 
+        // find day container
         // create day container if not yet made
-        let date = `${streamTime.getMonth() + 1}-${streamTime.getDate()}`
+        let date = moment(stream.time).format("M-D");
+        let dayContainer = $(`#${date}`);
         if (!dayContainer.length) {
             // create day container
             dayContainer = dayTemplate.clone();
             dayContainer.attr("id", date);
-            let dayStr = `${streamTime.getMonth() + 1}/${streamTime.getDate()} - ${days[streamTime.getDay()]}`;
+            let dayStr = `${moment().format("M/D")} - ${days[streamTime.day()-1]}`;
             dayContainer.find(".dayHeader")
                 .html(dayStr.replace(" - ", "<br/>"))
                 .attr("title", dayStr);
@@ -147,18 +151,23 @@ function buildSchedule(streams) {
 
         // avatar
         clickable.find(".avatar")
-            .attr("src", revMembers[stream.collaborators[0]])
+            .attr("src", revMemberPhotos[stream.collaborators[0]])
 
         // name
         clickable.find(".mName")
             .text(stream.host);
 
         // time
-        let timeStr = streamTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZoneName: 'short' });
-
         let time = clickable.find(".streamTime")
-        time.attr("title", timeStr)
-            .text(timeStr);
+        if (lang === "ja-jp"){
+            time.attr("title", streamTime.format("HH:mm"));
+            timeStr = streamTime.format("HH:mm z");
+        } else {
+            time.attr("title", streamTime.format("h:mm A"));
+            timeStr = streamTime.format("h:mm A z");
+        }
+
+        time.text(timeStr);
 
         // live
         if (stream.live) {
@@ -188,7 +197,7 @@ function buildSchedule(streams) {
             // create collab images
             collaborators.forEach(function (collaborator, index) {
                 let collabor = $("#collabTemplate").clone();
-                collabor.attr("src", revMembers[collaborator].slice(0, revMembers[collaborator].indexOf("=")))
+                collabor.attr("src", revMemberPhotos[collaborator].slice(0, revMemberPhotos[collaborator].indexOf("=")))
                     .attr("title", collaborator)
                     .css("grid-column", `${index * 3 + 1}/${index * 3 + 5}`);
                 collabor.appendTo(collabContainer);

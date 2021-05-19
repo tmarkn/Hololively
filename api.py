@@ -10,7 +10,7 @@ from json_serial import json_serial
 
 from_zone = tz.gettz('Asia/Tokyo')
 
-with open('static/json/members.json', 'r', encoding='utf-8') as f:
+with open('static/json/memberPhotos.json', 'r', encoding='utf-8') as f:
     members = json.load(f)
 
 class Stream:
