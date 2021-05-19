@@ -19,7 +19,7 @@ def track_api():
         't': 'pageview',  # Event hit type.
         'dt': 'Hololively - API', # Page title
         'dh': 'hololively.com', # Site Name
-        'dp': '/api' # Page name
+        'dp': '/api' # Path name
     }
 
     response = requests.post(
