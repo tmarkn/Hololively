@@ -15,8 +15,6 @@ def track_api():
     data = {
         'v': '1',  # API Version.
         'tid': GA_MEASUREMENT_ID,  # Tracking ID / Property ID.
-        # Anonymous Client Identifier. Ideally, this should be a UUID that
-        # is associated with particular user, device, or browser instance.
         'cid': '555',
         't': 'pageview',  # Event hit type.
         'dt': 'Hololively - API', # Page title
@@ -27,9 +25,6 @@ def track_api():
     response = requests.post(
         'https://www.google-analytics.com/collect', data=data)
 
-    # If the request fails, this will raise a RequestException. Depending
-    # on your application's needs, this may be a non-error and can be caught
-    # by the caller.
     return response
 
 app = Flask(__name__, static_url_path='/static')
