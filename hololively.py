@@ -1,5 +1,6 @@
 import markdown
 import os
+import requests
 from api import API
 from datetime import datetime, timezone
 from dotenv import load_dotenv
@@ -7,6 +8,29 @@ from flask import Flask, render_template, url_for, request
 
 load_dotenv()
 GA_MEASUREMENT_ID = os.getenv("GA_MEASUREMENT_ID")
+
+
+
+def track_api():
+    data = {
+        'v': '1',  # API Version.
+        'tid': GA_MEASUREMENT_ID,  # Tracking ID / Property ID.
+        # Anonymous Client Identifier. Ideally, this should be a UUID that
+        # is associated with particular user, device, or browser instance.
+        'cid': '555',
+        't': 'pageview',  # Event hit type.
+        'dt': 'Hololively - API', # Page title
+        'dh': 'hololively.com', # Site Name
+        'dp': '/api' # Page name
+    }
+
+    response = requests.post(
+        'https://www.google-analytics.com/collect', data=data)
+
+    # If the request fails, this will raise a RequestException. Depending
+    # on your application's needs, this may be a non-error and can be caught
+    # by the caller.
+    return response
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -36,6 +60,7 @@ def about():
 @app.route('/api/<query>')
 @app.route('/api/<query>/')
 def api(query = ''):
+    track_api()
     endpoints = [
         "",
         "hololive",
