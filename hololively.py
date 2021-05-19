@@ -9,9 +9,7 @@ from flask import Flask, render_template, url_for, request
 load_dotenv()
 GA_MEASUREMENT_ID = os.getenv("GA_MEASUREMENT_ID")
 
-
-
-def track_api():
+def track_api(userAgent=None):
     data = {
         'v': '1',  # API Version.
         'tid': GA_MEASUREMENT_ID,  # Tracking ID / Property ID.
@@ -19,11 +17,12 @@ def track_api():
         't': 'pageview',  # Event hit type.
         'dt': 'Hololively - API', # Page title
         'dh': 'hololively.com', # Site Name
-        'dp': '/api' # Path name
+        'dp': '/api', # Path name
+        'ua': userAgent
     }
 
     response = requests.post(
-        'https://www.google-analytics.com/collect', data=data)
+        'https://www.google-analytics.com/collect', params=data)
 
     return response
 
@@ -55,7 +54,9 @@ def about():
 @app.route('/api/<query>')
 @app.route('/api/<query>/')
 def api(query = ''):
-    track_api()
+    response = track_api(request.headers.get('User-Agent'))
+    if not response.ok:
+        print(response.content)
     endpoints = [
         "",
         "hololive",
