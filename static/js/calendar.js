@@ -23,6 +23,8 @@ let loadingContainer = $("#loadingContainer");
 let dayTemplate = $("#dayTemplate");
 let streamTemplate = $("#streamTemplate");
 let lastRefresh = Date.now();
+let scrollStart = false;
+let refreshActive = true;
 
 // query
 var url = new URL(window.location.href);
@@ -39,43 +41,38 @@ $(document).ready(function () {
     liveContainer.insertBefore(mobileButton);
 });
 
-// periodically refresh on focus
-$(window).on("focus", function () {
-    checkRefresh(5);
-});
-
-$(window).on("scroll", function () {
-    clearTimeout($.data(this, 'scrollTimer'));
-    $.data(this, 'scrollTimer', setTimeout(function () {
-        checkRefresh(5)
-    }, 100));
-});
-
-$(window).on("click", function () {
+// periodically refresh on focus or mouse down
+$(window).on("focus mousedown touchstart scroll", function () {
     checkRefresh(5);
 });
 
 function checkRefresh(targetMinutes) {
-    // difference in minutes is greater than 5
-    let now = Date.now();
-    let minutesPassed = (now - lastRefresh) / 1000 / 60;
-    if (minutesPassed > targetMinutes) {
-        // update data
-        $.ajax({
-            url: "/api/" + query,
-            type: "GET",
-            dataType: "json",
-            cache: false,
-            success: function (data) {
-                loadingContainer.css("display", "flex");
-                streams = data.streams;
-                buildSchedule(streams);
-                lastRefresh = now;
-                waitForElement(calendarContainer, function () {
-                    loadingContainer.css("display", "none");
-                });
-            }
-        });
+    if (refreshActive) {
+        refreshActive = false;
+        // difference in minutes is greater than target minutes
+        let now = Date.now();
+        let minutesPassed = (now - lastRefresh) / 1000 / 60;
+        if (minutesPassed > targetMinutes) {
+            // update data
+            $.ajax({
+                url: "/api/" + query,
+                type: "GET",
+                dataType: "json",
+                cache: false,
+                success: function (data) {
+                    loadingContainer.css("display", "flex");
+                    streams = data.streams;
+                    buildSchedule(streams);
+                    lastRefresh = now;
+                    waitForElement(calendarContainer, function () {
+                        loadingContainer.css("display", "none");
+                    });
+                }
+            });
+        }
+        setTimeout( function() {
+            refreshActive = true
+        }, 1000);
     }
 }
 
@@ -127,7 +124,7 @@ function buildSchedule(streams) {
             // create day container
             dayContainer = dayTemplate.clone();
             dayContainer.attr("id", date);
-            let dayStr = `${moment().format("M/D")} - ${days[streamTime.day()-1]}`;
+            let dayStr = `${moment().format("M/D")} - ${days[streamTime.day() - 1]}`;
             dayContainer.find(".dayHeader")
                 .html(dayStr.replace(" - ", "<br/>"))
                 .attr("title", dayStr);
@@ -159,7 +156,7 @@ function buildSchedule(streams) {
 
         // time
         let time = clickable.find(".streamTime")
-        if (lang === "ja-jp"){
+        if (lang === "ja-jp") {
             time.attr("title", streamTime.format("HH:mm"));
             timeStr = streamTime.format("HH:mm z");
         } else {
