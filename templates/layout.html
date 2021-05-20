@@ -2,7 +2,14 @@
 <html>
 <head>
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/hologo.png') }}">
+    {% if title %}
+        <title>Hololively - {{title}}</title>
+    {% else %}
+        <title>Hololively</title>
+    {% endif %}
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="description" content="Hololively is a fan-made schedule viewer for Hololive, Cover Corp.'s Vtuber agency. Hololively includes an API that you can use to build your own schedule.">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/nav.css' ) }}">
     
@@ -16,12 +23,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue">
     
-    
-    {% if title %}
-        <title>Hololively - {{title}}</title>
-    {% else %}
-        <title>Holorlively</title>
-    {% endif %}
     {% if GA_MEASUREMENT_ID %}
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id={{GA_MEASUREMENT_ID}}"></script>

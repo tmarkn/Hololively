@@ -1,6 +1,8 @@
 # About
 
-This is the Hololively app written and maintained by [Tmarkn](http://github.com/Tmarkn).
+Hololively is a fan-made schedule viewer for Hololive, Cover Corp.'s Vtuber agency. Hololively includes an API that you can use to build your own schedule.
+
+The Hololively app written and maintained by [Tmarkn](http://github.com/Tmarkn).
 
 The project can be found at [http://github.com/Tmarkn/hololively](http://github.com/Tmarkn/hololively).
 
