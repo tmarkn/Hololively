@@ -43,36 +43,36 @@ $(document).ready(function () {
 
 // periodically refresh on focus or mouse down
 $(window).on("focus mousedown touchstart scroll", function () {
-    checkRefresh(5);
+    if (refreshActive) {
+        refreshActive = false;
+        checkRefresh(5);
+        setTimeout(function () {
+            refreshActive = true
+        }, 1000);
+    }
 });
 
 function checkRefresh(targetMinutes) {
-    if (refreshActive) {
-        refreshActive = false;
-        // difference in minutes is greater than target minutes
-        let now = Date.now();
-        let minutesPassed = (now - lastRefresh) / 1000 / 60;
-        if (minutesPassed > targetMinutes) {
-            // update data
-            $.ajax({
-                url: "/api/" + query,
-                type: "GET",
-                dataType: "json",
-                cache: false,
-                success: function (data) {
-                    loadingContainer.css("display", "flex");
-                    streams = data.streams;
-                    buildSchedule(streams);
-                    lastRefresh = now;
-                    waitForElement(calendarContainer, function () {
-                        loadingContainer.css("display", "none");
-                    });
-                }
-            });
-        }
-        setTimeout( function() {
-            refreshActive = true
-        }, 1000);
+    // difference in minutes is greater than target minutes
+    let now = Date.now();
+    let minutesPassed = (now - lastRefresh) / 1000 / 60;
+    if (minutesPassed > targetMinutes) {
+        // update data
+        $.ajax({
+            url: "/api/" + query,
+            type: "GET",
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                loadingContainer.css("display", "flex");
+                streams = data.streams;
+                buildSchedule(streams);
+                lastRefresh = now;
+                waitForElement(calendarContainer, function () {
+                    loadingContainer.css("display", "none");
+                });
+            }
+        });
     }
 }
 
@@ -267,8 +267,8 @@ function showNotLive(animationTime) {
         animationTime = 300;
     }
     // animate
-    $(".dayHeader").slideDown(animationTime);
-    $(".streamContainer:not(.live):not(#streamTemplate)").slideDown(animationTime);
+    $(".dayHeader").stop().slideDown(animationTime)
+        .parent().find(".streamContainer:not(.live):not(#streamTemplate)").stop().slideDown(animationTime);
     $(window).scrollTop(0);
 }
 
@@ -278,11 +278,9 @@ function hideNotLive(animationTime) {
         animationTime = 300;
     }
     //animate
-    $(".streamContainer:not(.live)").slideUp(animationTime);
+    $(".streamContainer:not(.live)").stop().slideUp(animationTime);
     // get all dayContainers and subtract the ones with live elements
-    $(".dayContainer").not(
-        $(".live").parent()
-    ).find(".dayHeader").slideUp(animationTime);
+    $(".dayContainer").not($(".live").parent()).find(".dayHeader").stop().slideUp(animationTime);
     $(window).scrollTop(0);
 }
 
