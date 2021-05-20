@@ -7,7 +7,7 @@ nav {
     width: 100%;
     top: 0;
     background-color: var(--main-bg-color);
-    z-index: 2;
+    z-index: 3;
 }
 #navFirst {
     height: 50px;

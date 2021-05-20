@@ -12,7 +12,7 @@ let defaultOn = [
 ];
 // switches with a default value of unchecked
 let defaultOff = [
-
+    [persistentMode, persistentModeToggle = $("#persistentMode")]
 ];
 
 $(document).ready(function () {
@@ -32,6 +32,8 @@ $(document).ready(function () {
             [cookie, toggle] = pair;
             if (cookie) {
                 $(toggle).prop('checked', true);
+            } else {
+                $(toggle).prop('checked', false);
             }
         });
     }

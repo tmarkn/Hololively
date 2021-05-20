@@ -185,6 +185,7 @@ img {
     align-items:center;
     justify-content:center;
     opacity: 60%;
+    z-index: 2;
 }
 #loading {
     vertical-align: middle;

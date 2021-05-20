@@ -56,6 +56,11 @@ input:checked + .slider:before {
   transform: translateX(20px);
 }
 
+.drop > select {
+    height: 32px;
+    width: 200px;
+}
+
 .greyed {
     web-filter: sepia(100%) saturate(50%) hue-rotate(180deg) brightness(65%);
     filter: sepia(100%) saturate(50%) hue-rotate(180deg) brightness(65%);
@@ -69,5 +74,10 @@ input:checked + .slider:before {
 @media screen and (max-width: 800px) {
     .setContainer {
         font-size: 20px;
+    }
+}
+@media screen and (max-width: 400px) {
+    .drop > select {
+        width: 120px;
     }
 }

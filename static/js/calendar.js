@@ -23,7 +23,6 @@ let loadingContainer = $("#loadingContainer");
 let dayTemplate = $("#dayTemplate");
 let streamTemplate = $("#streamTemplate");
 let lastRefresh = Date.now();
-let onlyLiveShown = false;
 
 // query
 var url = new URL(window.location.href);
@@ -65,10 +64,11 @@ function checkRefresh(targetMinutes) {
         $.ajax({
             url: "/api/" + query,
             type: "GET",
+            dataType: "json",
             cache: false,
             success: function (data) {
                 loadingContainer.css("display", "flex");
-                streams = JSON.parse(data).streams;
+                streams = data.streams;
                 buildSchedule(streams);
                 lastRefresh = now;
                 waitForElement(calendarContainer, function () {
@@ -121,7 +121,7 @@ function buildSchedule(streams) {
 
         // find day container
         // create day container if not yet made
-        let date = moment(stream.time).format("M-D");
+        let date = streamTime.format("M-D");
         let dayContainer = $(`#${date}`);
         if (!dayContainer.length) {
             // create day container
@@ -211,13 +211,17 @@ function buildSchedule(streams) {
     // scroll to live
     if (newLive.length) {
         liveContainer.css("transform", "scale(0.7)");
-        if (onlyLiveShown) {
+        if (liveMode) {
             showNotLive(0);
             hideNotLive(0);
         }
     } else {
         liveContainer.css("transform", "scale(0)");
         showNotLive();
+        liveMode = false;
+        if (persistentMode) {
+            setCookie("liveMode", false, 30);
+        }
     }
 }
 
@@ -248,13 +252,16 @@ function toggleLive(animationTime) {
         animationTime = 300;
     }
     // activate correct function based on variable
-    if (onlyLiveShown) {
+    if (liveMode) {
         showNotLive(animationTime);
     } else {
         hideNotLive(animationTime);
     }
     // toggle variable
-    onlyLiveShown = !onlyLiveShown;
+    liveMode = !liveMode;
+    if (persistentMode) {
+        setCookie("liveMode", liveMode, 30);
+    }
 }
 
 function showNotLive(animationTime) {

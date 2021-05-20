@@ -8,6 +8,14 @@ let darkMode = true;
 if (getCookie("darkMode") !== null) {
     darkMode = getCookie("darkMode") === "true";
 }
+let persistentMode = false;
+if (getCookie("persistentMode") !== null) {
+    persistentMode = getCookie("persistentMode") === "true";
+}
+let liveMode = false;
+if (persistentMode && getCookie("liveMode") !== null) {
+    liveMode = getCookie("liveMode") === "true";
+}
 let tz = null;
 if (getCookie("tz") !== null) {
     tz = getCookie("tz");
