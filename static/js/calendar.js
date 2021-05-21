@@ -22,9 +22,10 @@ let liveContainer = $("#liveContainer");
 let loadingContainer = $("#loadingContainer");
 let dayTemplate = $("#dayTemplate");
 let streamTemplate = $("#streamTemplate");
-let lastRefresh = Date.now();
 let scrollStart = false;
-let refreshActive = true;
+let targetMinutes = 5;
+
+targetMinutes = targetMinutes * 60 * 1000;
 
 // query
 var url = new URL(window.location.href);
@@ -35,45 +36,34 @@ if (query === null) {
 
 $(document).ready(function () {
     buildSchedule(streams);
+    setTimeout(function () {
+        refresh(targetMinutes);
+    }, targetMinutes);
     if (liveInNav === true) {
         liveContainer.addClass("liveInNav");
     }
     liveContainer.insertBefore(mobileButton);
 });
 
-// periodically refresh on focus or mouse down
-$(window).on("focus mousedown touchstart scroll", function () {
-    if (refreshActive) {
-        refreshActive = false;
-        checkRefresh(5);
-        setTimeout(function () {
-            refreshActive = true
-        }, 1000);
-    }
-});
-
-function checkRefresh(targetMinutes) {
-    // difference in minutes is greater than target minutes
-    let now = Date.now();
-    let minutesPassed = (now - lastRefresh) / 1000 / 60;
-    if (minutesPassed > targetMinutes) {
-        // update data
-        $.ajax({
-            url: "/api/" + query,
-            type: "GET",
-            dataType: "json",
-            cache: false,
-            success: function (data) {
-                loadingContainer.css("display", "flex");
-                streams = data.streams;
-                buildSchedule(streams);
-                lastRefresh = now;
-                waitForElement(calendarContainer, function () {
-                    loadingContainer.css("display", "none");
-                });
-            }
-        });
-    }
+function refresh(targetMinutes) {
+    // update data
+    $.ajax({
+        url: "/api/" + query,
+        type: "GET",
+        dataType: "json",
+        cache: false,
+        success: function (data) {
+            loadingContainer.css("display", "flex");
+            streams = data.streams;
+            buildSchedule(streams);
+            waitForElement(calendarContainer, function () {
+                loadingContainer.css("display", "none");
+            });
+        }
+    });
+    setTimeout(function () {
+        refresh(targetMinutes);
+    }, targetMinutes);
 }
 
 // image does not exist
