@@ -102,9 +102,11 @@ function buildSchedule(streams) {
     streams.forEach(stream => {
         // set time zone
         let streamTime = moment(stream.time).tz(moment.tz.guess());
+        console.log(streamTime.format("M/D/YYYY D"));
         if (tz !== null) {
             streamTime = moment(stream.time).tz(tz);
         }
+        console.log(streamTime.format("M/D/YYYY D"));
 
         // find day container
         // create day container if not yet made
@@ -114,7 +116,7 @@ function buildSchedule(streams) {
             // create day container
             dayContainer = dayTemplate.clone();
             dayContainer.attr("id", date);
-            let dayStr = `${moment().format("M/D")} - ${days[streamTime.day() - 1]}`;
+            let dayStr = `${streamTime.format("M/D")} - ${days[(streamTime.day()) % 7]}`;
             dayContainer.find(".dayHeader")
                 .html(dayStr.replace(" - ", "<br/>"))
                 .attr("title", dayStr);
