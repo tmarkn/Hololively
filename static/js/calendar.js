@@ -102,11 +102,9 @@ function buildSchedule(streams) {
     streams.forEach(stream => {
         // set time zone
         let streamTime = moment(stream.time).tz(moment.tz.guess());
-        console.log(streamTime.format("M/D/YYYY D"));
         if (tz !== null) {
             streamTime = moment(stream.time).tz(tz);
         }
-        console.log(streamTime.format("M/D/YYYY D"));
 
         // find day container
         // create day container if not yet made
