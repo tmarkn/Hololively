@@ -205,6 +205,9 @@ img {
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
+.lightMode #loading {
+    filter: brightness(0.2);
+}
 
 @media screen and (max-width: 800px) {
     #container {
