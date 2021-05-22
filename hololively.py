@@ -53,7 +53,7 @@ def home():
 @app.route('/faq/')
 def about():
     return render_template('about.html', 
-        title='about', 
+        title='About', 
         GA_MEASUREMENT_ID=GA_MEASUREMENT_ID, 
         aboutText=markdown.markdown(aboutText), 
         faqText=markdown.markdown(faqText),
