@@ -37,6 +37,8 @@ with open('README.md', 'r', encoding="utf-8") as f:
     documentationText = f.read()
 with open('policy.md', 'r', encoding="utf-8") as f:
     policyText = f.read()
+with open('faq.md', 'r', encoding="utf-8") as f:
+    faqText = f.read()
 
 @app.route('/')
 @app.route('/home/')
@@ -48,8 +50,15 @@ def home():
 
 @app.route('/about/')
 @app.route('/policy/')
+@app.route('/faq/')
 def about():
-    return render_template('about.html', title='about', GA_MEASUREMENT_ID=GA_MEASUREMENT_ID, aboutText=markdown.markdown(aboutText), policyText=markdown.markdown(policyText))
+    return render_template('about.html', 
+        title='about', 
+        GA_MEASUREMENT_ID=GA_MEASUREMENT_ID, 
+        aboutText=markdown.markdown(aboutText), 
+        faqText=markdown.markdown(faqText),
+        policyText=markdown.markdown(policyText)
+    )
 
 @app.route('/api/')
 @app.route('/api/<query>')
