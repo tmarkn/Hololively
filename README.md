@@ -29,10 +29,10 @@ The results can be filtered by appending one of the filters below to the end.
 ## Contributing
 While suggestions are appreciated, pull requests will not be accepted
 
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
-
 ## Todo
 - Better Menus
 - Context Menu Options
 - Translate Names
+
+## License
+[GPL](https://github.com/tmarkn/Hololively/blob/master/LICENSE)
