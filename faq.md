@@ -1,5 +1,13 @@
 # FAQ
 
+## What is that loading icon in the corner for? 
+
+That loading icon indicates when the page is refreshing the data.
+
+## How often does the page refresh?
+
+The page refreshes every five minutes. If you need it to update immediately, try reloading the page.
+
 ## The live button is missing, where is it? 
 
 When there is no live channels, the live button is hidden
