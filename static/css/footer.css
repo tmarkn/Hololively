@@ -1,0 +1,43 @@
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+}
+footer > * {
+    margin: 4px;
+}
+.reddit-share-button {
+    text-decoration: none;
+    color: white;
+    font-size: 11px;
+    font-family: roboto;
+    font-weight: bold;
+}
+
+.reddit-share-button > div {
+    background-color: red;
+    border-radius: 4px;
+    height: 20px;
+    margin-top: 2px;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+}
+.reddit-share-button > div:hover {
+    background-color: darkred;
+}
+.reddit-share-button > div::before {
+    content: "";
+    background-size: 16px 16px; 
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    background-image: url("/static/images/reddit.png");
+}
+.reddit-share-button > div > p {
+    margin: -1px 6px 0 20px;
+}
