@@ -259,7 +259,6 @@ function showNotLive(animationTime) {
     // animate
     $(".dayHeader").stop().slideDown(animationTime)
         .parent().find(".streamContainer:not(.live):not(#streamTemplate)").stop().slideDown(animationTime);
-    $(window).scrollTop(0);
 }
 
 function hideNotLive(animationTime) {
@@ -271,7 +270,6 @@ function hideNotLive(animationTime) {
     $(".streamContainer:not(.live)").stop().slideUp(animationTime);
     // get all dayContainers and subtract the ones with live elements
     $(".dayContainer").not($(".live").parent()).find(".dayHeader").stop().slideUp(animationTime);
-    $(window).scrollTop(0);
 }
 
 function onlyUnique(value, index, self) {
