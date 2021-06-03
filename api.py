@@ -85,7 +85,7 @@ def API(query):
                         f.write('\n')
             
             # live
-            live = bool(re.search(r"border: 3px red solid", stream.attrs.get('style')))
+            live = bool(re.search(r"border: 3px red", stream.attrs.get('style')))
 
             # Stream
             data.append(Stream(link, host, time, thumbnail, collaborators, live))
