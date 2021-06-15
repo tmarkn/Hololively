@@ -57,7 +57,10 @@ def API(query):
             link = stream['href']
 
             # host
-            host = stream.find('div', attrs={'class': 'name'}).text.strip()
+            try:
+                host = stream.find('div', attrs={'class': 'name'}).text.strip()
+            except AttributeError:
+                continue
 
             # time
             try:
