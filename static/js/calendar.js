@@ -205,10 +205,6 @@ function buildSchedule(streams) {
     } else {
         liveContainer.css("transform", "scale(0)");
         showNotLive();
-        liveMode = false;
-        if (persistentMode) {
-            setCookie("liveMode", false, 30);
-        }
     }
 }
 
