@@ -56,16 +56,23 @@ def API(query):
             # stream link
             link = stream['href']
 
+            # filter only lives
+            parent = stream.find_parent('div')
+            if 'col-11' in parent.get("class"):
+                continue
+
             # host
             try:
                 host = stream.find('div', attrs={'class': 'name'}).text.strip()
-            except AttributeError:
+            except AttributeError as e:
+                print(f'Name error: {e}')
                 continue
 
             # time
             try:
                 rawTime = stream.find('div', attrs={'class': 'datetime'}).text.strip().split(':')
-            except Exception:
+            except Exception as e:
+                print(f'Datetime error: {e}')
                 continue
             
             time = currentDay.replace(hour=int(rawTime[0]), minute=int(rawTime[1]), tzinfo=from_zone)
