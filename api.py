@@ -1,10 +1,9 @@
 import datetime
 import json
 import re
-import requests
-from dateutil import tz
-
 from bs4 import BeautifulSoup as bs
+from dateutil import tz
+from urllib.request import urlopen
 
 from json_serial import json_serial
 
@@ -25,12 +24,13 @@ class Stream:
 def API(query):
     url = 'https://schedule.hololive.tv/lives/' + query
 
-    text = requests.get(url, headers={'Cache-Control': 'no-cache'}).text
+    text = urlopen(url).read()
     soup = bs(text, "html.parser")
 
     data = soup.find('div', attrs={'id': 'all'})
-    containers = data.findAll('div', recursive=False, attrs={'class': 'container'})
-    
+    containers = data.findAll('div', attrs={'class': 'container'}, recursive=False)
+    containers.extend(soup.findAll('div', attrs={'class': 'container'}, recursive=False))
+
     data = []
     currentDay = None
     for cont in containers:
