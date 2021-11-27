@@ -184,7 +184,16 @@ function buildSchedule(streams) {
             // create collab images
             collaborators.forEach(function (collaborator, index) {
                 let collabor = $("#collabTemplate").clone();
-                collabor.attr("src", revMemberPhotos[collaborator].slice(0, revMemberPhotos[collaborator].indexOf("=")))
+
+                // format image link with highest quality image
+                let collabImage = revMemberPhotos[collaborator];
+                let indexOfEquals = collabImage.lastIndexOf("=");
+                if (indexOfEquals !== -1) {
+                    collabImage = collabImage.slice(0, indexOfEquals);
+                }
+
+                // append each collaborator
+                collabor.attr("src", collabImage)
                     .attr("title", collaborator)
                     .css("grid-column", `${index * 3 + 1}/${index * 3 + 5}`);
                 collabor.appendTo(collabContainer);
