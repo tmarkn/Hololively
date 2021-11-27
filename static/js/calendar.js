@@ -175,6 +175,15 @@ function buildSchedule(streams) {
             }
         }
 
+        // prevent Haachama subCh.
+        if (stream.host === "赤井はあと" || stream.host === "赤井はあとSub") {
+            let haatoMainChIndex = collaborators.indexOf("赤井はあと (Akai Haato)");
+            let haatoSubChIndex = collaborators.indexOf("赤井はあと sub Ch. (Akai Haato sub Ch.)");
+            if (haatoMainChIndex >= 0 && haatoSubChIndex >= 0) {
+                collaborators.splice(haatoSubChIndex, 1);
+            }
+        }
+
         // collab stream
         let collabContainer = clickable.find(".collabContainer");
         if (collaborators.length > 1) {
