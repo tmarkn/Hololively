@@ -196,10 +196,9 @@ function buildSchedule(streams) {
                 // get name of collaborator
                 let enName = collaborator;
                 let nameMatch = collaborator.match(collabNameRegExp);
-                // console.log(nameMatch);
+
                 if (nameMatch) {
                     let splits = nameMatch[0].replace(/[\(\)']+/g, '').split(' ');
-                        console.log(splits);
                         // roboco special case
                         if (splits[0] == 'Roboco') {
                             enName = splits[0];
@@ -211,7 +210,6 @@ function buildSchedule(streams) {
                         }
                 }
                 enName = enName.toLowerCase();
-                console.log(enName);
 
                 let collabor = $("#collabTemplate").clone();
 
