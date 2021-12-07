@@ -8,7 +8,7 @@
 
 /* Holo 0th-Gen */
 .roboco {
-    object-position: 50% 55%;
+    object-position: 50% 65%;
 }
 
 /* Holo 1st-Gen */
@@ -18,12 +18,17 @@
     object-position: 50% 65%;
 }
 
+/* Holo-Gamers */
+.okayu {
+    object-position: 50% 55%;
+}
+
 /* Holo-Fantasy */
 .pekora {
     object-position: 50% 70%;
 }
 .marine {
-    object-position: 50% 45%;
+    object-position: 50% 40%;
 }
 .rushia {
     object-position: 50% 55%;
@@ -35,6 +40,17 @@
 }
 .polka {
     object-position: 50% 65%;
+}
+
+/* Holo-Id */
+
+
+/* Holo-Id Gen2 */
+.anya {
+    object-position: 50% 35%;
+}
+.reine {
+    object-position: 50% 32%;
 }
 
 /* Holo-Myth */
@@ -50,6 +66,12 @@
 /* Holo-Council */
 .kronii {
     object-position: 50% 38%;
+}
+.mumei {
+    object-position: 50% 45%;
+}
+.sana {
+    object-position: 50% 60%;
 }
 
 /* HoloX */
