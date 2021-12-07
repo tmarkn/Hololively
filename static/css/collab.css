@@ -1,0 +1,53 @@
+/* Official */
+.hololive {
+    object-position: 50% 30%;
+}
+.holostars {
+    object-position: 50% 45%;
+}
+
+/* Holo 0th-Gen */
+.roboco {
+    object-position: 50% 55%;
+}
+
+/* Holo 1st-Gen */
+
+/* Holo 2nd-Gen */
+.aqua {
+    object-position: 50% 65%;
+}
+
+/* Holo-Fantasy */
+.pekora {
+    object-position: 50% 70%;
+}
+.marine {
+    object-position: 50% 45%;
+}
+.rushia {
+    object-position: 50% 55%;
+}
+
+/* Holo-Five */
+.boton {
+    object-position: 50% 55%;
+}
+.polka {
+    object-position: 50% 65%;
+}
+
+/* Holo-Myth */
+.calli {
+    object-position: 50% 65%;
+}
+
+/* Holo-Singers */
+.irys {
+    object-position: 50% 30%;
+}
+
+/* Holo-Counsil */
+.kronii {
+    object-position: 50% 40%;
+}

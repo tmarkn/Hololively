@@ -1,5 +1,7 @@
+const collabNameRegExp = /\(([^)]+)\)/;
+
 // days of the week
-let days = [
+const days = [
     "SUN (日)",
     "MON (月)",
     "TUE (火)",
@@ -10,19 +12,18 @@ let days = [
 ];
 
 // resolutions
-let res = [
+const res = [
     "sddefault.jpg",
 
 ]
 
 // variables
-let revMemberPhotos = swap(memberPhotos);
-let calendarContainer = $("#calendarContainer");
-let liveContainer = $("#liveContainer");
-let loadingContainer = $("#loadingContainer");
-let dayTemplate = $("#dayTemplate");
-let streamTemplate = $("#streamTemplate");
-let scrollStart = false;
+const revMemberPhotos = swap(memberPhotos);
+const calendarContainer = $("#calendarContainer");
+const liveContainer = $("#liveContainer");
+const loadingContainer = $("#loadingContainer");
+const dayTemplate = $("#dayTemplate");
+const streamTemplate = $("#streamTemplate");
 let targetMinutes = 5;
 
 targetMinutes = targetMinutes * 60 * 1000;
@@ -192,6 +193,26 @@ function buildSchedule(streams) {
 
             // create collab images
             collaborators.forEach(function (collaborator, index) {
+                // get name of collaborator
+                let enName = collaborator;
+                let nameMatch = collaborator.match(collabNameRegExp);
+                // console.log(nameMatch);
+                if (nameMatch) {
+                    let splits = nameMatch[0].replace(/[\(\)']+/g, '').split(' ');
+                        console.log(splits);
+                        // roboco special case
+                        if (splits[0] == 'Roboco') {
+                            enName = splits[0];
+                        }
+                        else if (splits.length > 1) {
+                            enName = splits[1];
+                        } else {
+                            enName = splits[0];
+                        }
+                }
+                enName = enName.toLowerCase();
+                console.log(enName);
+
                 let collabor = $("#collabTemplate").clone();
 
                 // format image link with highest quality image
@@ -204,6 +225,7 @@ function buildSchedule(streams) {
                 // append each collaborator
                 collabor.attr("src", collabImage)
                     .attr("title", collaborator)
+                    .addClass(enName)
                     .css("grid-column", `${index * 3 + 1}/${index * 3 + 5}`);
                 collabor.appendTo(collabContainer);
                 collabor.removeAttr("id");
