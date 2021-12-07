@@ -47,7 +47,21 @@
     object-position: 50% 30%;
 }
 
-/* Holo-Counsil */
+/* Holo-Council */
 .kronii {
-    object-position: 50% 40%;
+    object-position: 50% 38%;
+}
+
+/* HoloX */
+.darkness {
+    object-position: 50% 60%;
+}
+.lui {
+    object-position: 50% 38%;
+}
+.chloe {
+    object-position: 50% 48%;
+}
+.iroha {
+    object-position: 50% 48%;
 }
