@@ -46,7 +46,14 @@ def home():
     query = request.args.get('q')
     if not query:
         query = ''
-    return render_template('calendar.html', GA_MEASUREMENT_ID=GA_MEASUREMENT_ID, streams=API(query=query), memberPhotos=memberPhotos, )
+    return render_template('calendar.html', GA_MEASUREMENT_ID=GA_MEASUREMENT_ID, streams=API(query=query), memberPhotos=memberPhotos)
+
+@app.route('/upcoming/')
+def active():
+    query = request.args.get('q')
+    if not query:
+        query = ''
+    return render_template('upcoming.html', GA_MEASUREMENT_ID=GA_MEASUREMENT_ID, streams=API(query=query), memberPhotos=memberPhotos)
 
 @app.route('/about/')
 @app.route('/policy/')
