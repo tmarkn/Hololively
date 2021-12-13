@@ -7,20 +7,54 @@
 }
 
 /* Holo 0th-Gen */
+.sora {
+    object-position: 50% 40%;
+}
 .roboco {
     object-position: 50% 65%;
 }
+.miko {
+    object-position: 50% 47%;
+}
+.suisei {
+    object-position: 50% 58%;
+}
+
+/* INNK */
+.azki {
+    object-position: 50% 46%;
+}
 
 /* Holo 1st-Gen */
+.mel {
+    object-position: 50% 28%;
+}
+.fubuki {
+    object-position: 50% 46%;
+}
+.aki {
+    object-position: 50% 45%;
+}
 
 /* Holo 2nd-Gen */
 .aqua {
     object-position: 50% 65%;
 }
+.ayame {
+    object-position: 50% 48%;
+}
 
 /* Holo-Gamers */
 .okayu {
     object-position: 50% 55%;
+}
+.mio {
+    object-position: 50% 55%;
+}
+
+/* Holo 4th-Gen */
+.kanata {
+    object-position: 50% 61%;
 }
 
 /* Holo-Fantasy */
@@ -33,13 +67,22 @@
 .rushia {
     object-position: 50% 55%;
 }
+.flare {
+    object-position: 50% 64%;
+}
+.noel {
+    object-position: 50% 33%;
+}
 
 /* Holo-Five */
-.boton {
-    object-position: 50% 55%;
+.botan {
+    object-position: 50% 54%;
 }
 .polka {
     object-position: 50% 65%;
+}
+.lamy {
+    object-position: 50% 46%;
 }
 
 /* Holo-Id */
@@ -57,6 +100,15 @@
 .calli {
     object-position: 50% 65%;
 }
+.gura {
+    object-position: 50% 53%;
+}
+.ina {
+    object-position: 50% 55%;
+}
+.amelia {
+    object-position: 50% 47%;
+}
 
 /* Holo-Singers */
 .irys {
@@ -73,6 +125,9 @@
 .sana {
     object-position: 50% 60%;
 }
+.baelz {
+    object-position: 50% 49%;
+}
 
 /* HoloX */
 .darkness {
@@ -86,4 +141,21 @@
 }
 .iroha {
     object-position: 50% 48%;
+}
+
+/* Holostars */
+.arurandeisu {
+    object-position: 50% 43%;
+}
+.miyabi {
+    object-position: 50% 51%;
+}
+.temma {
+    object-position: 50% 56%;
+}
+.shien {
+    object-position: 50% 68%;
+}
+.izuru {
+    object-position: 50% 44%;
 }

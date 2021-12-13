@@ -203,6 +203,10 @@ function buildSchedule(streams) {
                         if (splits[0] == 'Roboco') {
                             enName = splits[0];
                         }
+                        // aki special case
+                        else if (splits[0] == 'Aki') {
+                            enName = splits[0];
+                        }
                         else if (splits.length > 1) {
                             enName = splits[1];
                         } else {
