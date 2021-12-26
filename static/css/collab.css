@@ -38,6 +38,9 @@
 .matsuri {
     object-position: 50% 55%;
 }
+.choco {
+    object-position: 50% 40%;    
+}
 
 /* Holo 2nd-Gen */
 .aqua {
@@ -58,6 +61,9 @@
 /* Holo 4th-Gen */
 .kanata {
     object-position: 50% 61%;
+}
+.watame {
+    object-position: 50% 65%;
 }
 
 /* Holo-Fantasy */
@@ -89,7 +95,9 @@
 }
 
 /* Holo-Id */
-
+.moona {
+    object-position: 50% 32%;
+}
 
 /* Holo-Id Gen2 */
 .anya {
@@ -161,4 +169,7 @@
 }
 .izuru {
     object-position: 50% 44%;
+}
+.oga {
+    object-position: 50% 65%;
 }
