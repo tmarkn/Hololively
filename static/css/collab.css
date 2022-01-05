@@ -41,13 +41,16 @@
 .choco {
     object-position: 50% 40%;    
 }
+.haato {
+    object-position: 50% 40%;
+}
 
 /* Holo 2nd-Gen */
 .aqua {
     object-position: 50% 65%;
 }
 .ayame {
-    object-position: 50% 48%;
+    object-position: 50% 50%;
 }
 
 /* Holo-Gamers */
@@ -77,7 +80,7 @@
     object-position: 50% 55%;
 }
 .flare {
-    object-position: 50% 64%;
+    object-position: 50% 47%;
 }
 .noel {
     object-position: 50% 33%;
@@ -142,16 +145,19 @@
 
 /* HoloX */
 .darkness {
-    object-position: 50% 60%;
+    object-position: 50% 52%;
 }
 .lui {
     object-position: 50% 38%;
 }
 .chloe {
-    object-position: 50% 48%;
+    object-position: 50% 53%;
 }
 .iroha {
     object-position: 50% 48%;
+}
+.koyori {
+    object-position: 50% 65%;
 }
 
 /* Holostars */
@@ -159,17 +165,20 @@
     object-position: 50% 43%;
 }
 .miyabi {
-    object-position: 50% 51%;
+    object-position: 50% 46%;
 }
 .temma {
     object-position: 50% 56%;
 }
 .shien {
-    object-position: 50% 68%;
+    object-position: 50% 40%;
 }
 .izuru {
     object-position: 50% 44%;
 }
 .oga {
     object-position: 50% 65%;
+}
+.rikka {
+    object-position: 50% 46%;
 }
