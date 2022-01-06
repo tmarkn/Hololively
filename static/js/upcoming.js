@@ -199,54 +199,72 @@ function buildSchedule(streams) {
 
         // collab stream
         let collabContainer = clickable.find(".collabContainer");
+
         if (collaborators.length > 1) {
-            // grid
-            collabContainer.css("grid-template-columns", `repeat(${3 * collaborators.length + 1}, 1fr)`);
+            let numCollaborators = collaborators.length;
+            let numContainers = Math.ceil(collaborators.length / 12);
+            let index = 0;
 
-            // create collab images
-            collaborators.forEach(function (collaborator, index) {
-                // get name of collaborator
-                let enName = collaborator;
-                let nameMatch = collaborator.match(collabNameRegExp);
+            // make each container
+            for (let i = 0; i < numContainers; i++) {
+                // calculate how many in current row
+                let perRow = Math.ceil(numCollaborators / (numContainers - i));
+                numCollaborators -= perRow;
+                // clone container
+                let newCollabContainer = collabContainer.clone();
+                console.log(perRow);
+                
+                // do current row
+                for (let j = 0; j < perRow; j++) {
+                    // grid
+                    newCollabContainer.css("grid-template-columns", `repeat(${3 * perRow + 1}, 1fr)`);
 
-                if (nameMatch) {
-                    let splits = nameMatch[0].replace(/[\(\)']+/g, '').split(' ');
-                        // roboco special case
-                        if (splits[0] == 'Roboco') {
-                            enName = splits[0];
-                        }
-                        // aki special case
-                        else if (splits[0] == 'Aki') {
-                            enName = splits[0];
-                        }
-                        else if (splits.length > 1) {
-                            enName = splits[1];
-                        } else {
-                            enName = splits[0];
-                        }
+                    // create collab images
+                    let collaborator = collaborators[index]
+                    // get name of collaborator
+                    let enName = collaborator;
+                    let nameMatch = collaborator.match(collabNameRegExp);
+
+                    if (nameMatch) {
+                        let splits = nameMatch[0].replace(/[\(\)']+/g, '').split(' ');
+                            // roboco special case
+                            if (splits[0] == 'Roboco') {
+                                enName = splits[0];
+                            }
+                            // aki special case
+                            else if (splits[0] == 'Aki') {
+                                enName = splits[0];
+                            }
+                            else if (splits.length > 1) {
+                                enName = splits[1];
+                            } else {
+                                enName = splits[0];
+                            }
+                    }
+                    enName = enName.toLowerCase();
+
+                    let collabor = $("#collabTemplate").clone();
+
+                    // format image link with highest quality image
+                    let collabImage = revMemberPhotos[collaborator];
+                    let indexOfEquals = collabImage.lastIndexOf("=");
+                    if (indexOfEquals !== -1) {
+                        collabImage = collabImage.slice(0, indexOfEquals) + '=s800-c-k-c0x00ffffff-no-rj';
+                    }
+
+                    // append each collaborator
+                    collabor.attr("src", collabImage)
+                        .attr("title", collaborator)
+                        .addClass(enName)
+                        .css("grid-column", `${j * 3 + 1}/${j * 3 + 5}`);
+                    collabor.appendTo(newCollabContainer);
+                    collabor.removeAttr("id");
+                    index++;
                 }
-                enName = enName.toLowerCase();
-
-                let collabor = $("#collabTemplate").clone();
-
-                // format image link with highest quality image
-                let collabImage = revMemberPhotos[collaborator];
-                let indexOfEquals = collabImage.lastIndexOf("=");
-                if (indexOfEquals !== -1) {
-                    collabImage = collabImage.slice(0, indexOfEquals);
-                }
-
-                // append each collaborator
-                collabor.attr("src", collabImage)
-                    .attr("title", collaborator)
-                    .addClass(enName)
-                    .css("grid-column", `${index * 3 + 1}/${index * 3 + 5}`);
-                collabor.appendTo(collabContainer);
-                collabor.removeAttr("id");
-            });
-        } else {
-            collabContainer.remove();
+                newCollabContainer.appendTo(streamContainer);
+            }
         }
+        collabContainer.remove();
     });
 
     // scroll to live
