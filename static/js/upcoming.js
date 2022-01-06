@@ -212,7 +212,6 @@ function buildSchedule(streams) {
                 numCollaborators -= perRow;
                 // clone container
                 let newCollabContainer = collabContainer.clone();
-                console.log(perRow);
                 
                 // do current row
                 for (let j = 0; j < perRow; j++) {
