@@ -4,7 +4,7 @@
 
 nav {
     position: fixed;
-    width: 100%;
+    min-width: 100%;
     top: 0;
     background-color: var(--main-bg-color);
     z-index: 3;
@@ -52,7 +52,6 @@ nav {
     cursor: pointer;
     height: 40px;
     margin-right: 1em;
-    display: none;
     transition: filter .3s ease-in;
 }
 #mobileButton:hover {
@@ -89,9 +88,6 @@ nav {
 @media screen and (max-width: 800px) {
     #navBarContainer {
         padding: 10px;
-    }
-    #mobileButton {
-        display: block;
     }
     #menu {
         flex-direction: column;

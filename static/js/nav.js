@@ -5,29 +5,9 @@ let open = false;
 let mobile = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
 let mobileWidth = 800;
 
-if (mobile) {
-    $("head").append($("<link/>", {
-        rel: "stylesheet",
-        type: "text/css",
-        href: mobileUrl,
-    }))
-}
-
 setTimeout(function () {
     hideNav();
 }, 300);
-
-navBarContainer.on("mouseenter", function () {
-    if (!mobile && window.innerWidth > mobileWidth) {
-        showNav();
-    }
-});
-
-navBarContainer.on("mouseleave", function () {
-    if (!mobile && window.innerWidth > mobileWidth) {
-        hideNav();
-    }
-});
 
 mobileButton.on("mousedown", function (e) {
     if (!open) {
