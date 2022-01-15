@@ -123,6 +123,9 @@
 .amelia {
     object-position: 50% 47%;
 }
+.kiara {
+    object-position: 50% 45%;
+}
 
 /* Holo-Singers */
 .irys {
@@ -140,7 +143,7 @@
     object-position: 50% 60%;
 }
 .baelz {
-    object-position: 50% 49%;
+    object-position: 50% 46%;
 }
 
 /* HoloX */
@@ -181,4 +184,7 @@
 }
 .rikka {
     object-position: 50% 46%;
+}
+.roberu {
+    object-position: 50% 42%;
 }
