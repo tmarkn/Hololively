@@ -62,7 +62,7 @@ acceptCookiesToggle.on("input", function () {
     // enable other settings
     if ($(this).prop('checked')) {
         // set cookie for cookies
-        setCookie("acceptCookies", "true", 30);
+        setCookie("acceptCookies", "true", 10000);
         // disable buttons
         cookButton.prop('disabled', false)
             .parent().removeClass("greyed");
@@ -104,9 +104,9 @@ acceptCookiesToggle.on("input", function () {
 // set corresponding cookie
 $(".switchButton:not(#acceptCookies)").on("change", function () {
     if ($(this).prop('checked')) {
-        setCookie($(this).attr("id"), "true", 30);
+        setCookie($(this).attr("id"), "true", 10000);
     } else {
-        setCookie($(this).attr("id"), "false", 30);
+        setCookie($(this).attr("id"), "false", 10000);
     }
 });
 
@@ -122,10 +122,10 @@ $(darkModeToggle).on("change", function () {
 
 // when timezone value is changed update timezone
 timeZoneDrop.on("change", function () {
-    setCookie("tz", timeZoneDrop.val(), 30);
+    setCookie("tz", timeZoneDrop.val(), 10000);
 });
 
 // when language value is changed update language
 languageDrop.on("change", function () {
-    setCookie("lang", languageDrop.val(), 30);
+    setCookie("lang", languageDrop.val(), 10000);
 });
