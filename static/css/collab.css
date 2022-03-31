@@ -113,6 +113,14 @@
     object-position: 50% 32%;
 }
 
+/* Holo-Id Gen3 */
+.kaela {
+    object-position: 50% 46%;
+}
+.kobo {
+    object-position: 50% 54%;
+}
+
 /* Holo-Myth */
 .calli {
     object-position: 50% 65%;
@@ -148,6 +156,9 @@
 .baelz {
     object-position: 50% 60%;
 }
+.fauna {
+    object-position: 50% 55%;
+}
 
 /* HoloX */
 .darkness {
@@ -163,7 +174,7 @@
     object-position: 50% 48%;
 }
 .koyori {
-    object-position: 50% 65%;
+    object-position: 50% 58%;
 }
 
 /* Holostars */
@@ -171,7 +182,7 @@
     object-position: 50% 43%;
 }
 .miyabi {
-    object-position: 50% 46%;
+    object-position: 50% 43%;
 }
 .temma {
     object-position: 50% 56%;
@@ -190,4 +201,15 @@
 }
 .roberu {
     object-position: 50% 42%;
+}
+
+/* Holo-Uproar */
+.fuma {
+    object-position: 50% 45%;
+}
+.uyu {
+    object-position: 50% 38%;
+}
+.gamma {
+    object-position: 50% 43%;
 }
