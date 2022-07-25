@@ -23,6 +23,7 @@ The results can be filtered by appending one of the filters below to the end.
 - china*
 - indonesia
 - english
+- holostars_english
 
 *the china branch is no longer apart of Hololive
 
