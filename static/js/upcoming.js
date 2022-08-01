@@ -1,4 +1,5 @@
 const collabNameRegExp = /\(([^)]+)\)/;
+const DateTime = luxon.DateTime;
 
 // days of the week
 const days = [
@@ -102,18 +103,18 @@ function buildSchedule(streams) {
     // create objects
     streams.forEach(stream => {
         // set time zone
-        let streamTime = moment(stream.time).tz(moment.tz.guess());
+        let streamTime = DateTime.fromISO(stream.time);
         if (tz !== null) {
-            streamTime = moment(stream.time).tz(tz);
+            DateTime.fromISO('stream.time', {zone: tz});
         }
 
         // PASTE INTO CALENDAR.JS
         // don't include if passed time and not live
         if (!stream.live) {
-            let bufferedStreamTime = streamTime.add(15, 'minutes');
-            let current = moment();
+            let bufferedStreamTime = streamTime.plus({ minutes: 15 });
+            let current = DateTime.now();
 
-            if (current.isAfter(bufferedStreamTime)) {
+            if (current > bufferedStreamTime) {
                 return
             }
         }
@@ -121,13 +122,13 @@ function buildSchedule(streams) {
 
         // find day container
         // create day container if not yet made
-        let date = streamTime.format("M-D");
+        let date = streamTime.toFormat("M-d");
         let dayContainer = $(`#${date}`);
         if (!dayContainer.length) {
             // create day container
             dayContainer = dayTemplate.clone();
             dayContainer.attr("id", date);
-            let dayStr = `${streamTime.format("M/D")} - ${days[(streamTime.day()) % 7]}`;
+            let dayStr = `${streamTime.toFormat("M/d")} - ${days[(streamTime.toFormat("E")) % 7]}`;
             dayContainer.find(".dayHeader")
                 .html(dayStr.replace(" - ", "<br/>"))
                 .attr("title", dayStr);
@@ -160,11 +161,11 @@ function buildSchedule(streams) {
         // time
         let time = clickable.find(".streamTime")
         if (lang === "ja-jp") {
-            time.attr("title", streamTime.format("HH:mm"));
-            timeStr = streamTime.format("HH:mm z");
+            time.attr("title", streamTime.toFormat("HH:mm"));
+            timeStr = streamTime.toFormat("HH:mm ZZZZ");
         } else {
-            time.attr("title", streamTime.format("h:mm A"));
-            timeStr = streamTime.format("h:mm A z");
+            time.attr("title", streamTime.toFormat("h:mm a"));
+            timeStr = streamTime.toFormat("h:mm a ZZZZ");
         }
 
         time.text(timeStr);
@@ -201,6 +202,7 @@ function buildSchedule(streams) {
         let collabContainer = clickable.find(".collabContainer");
 
         if (collaborators.length > 1) {
+            // calculate number of containers
             let numCollaborators = collaborators.length;
             let numContainers = Math.ceil(collaborators.length / 12);
             let index = 0;
@@ -234,9 +236,12 @@ function buildSchedule(streams) {
                             else if (splits[0] == 'Aki') {
                                 enName = splits[0];
                             }
+                            // regular case
                             else if (splits.length > 1) {
                                 enName = splits[1];
-                            } else {
+                            } 
+                            // no surname
+                            else {
                                 enName = splits[0];
                             }
                     }
