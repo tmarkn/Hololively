@@ -1,5 +1,4 @@
 const collabNameRegExp = /\(([^)]+)\)/;
-const DateTime = luxon.DateTime;
 
 // days of the week
 const days = [
@@ -103,20 +102,20 @@ function buildSchedule(streams) {
     // create objects
     streams.forEach(stream => {
         // set time zone
-        let streamTime = DateTime.fromISO(stream.time);
+        let streamTime = moment(stream.time).tz(moment.tz.guess());
         if (tz !== null) {
-            DateTime.fromISO('stream.time', {zone: tz});
+            streamTime = moment(stream.time).tz(tz);
         }
 
         // find day container
         // create day container if not yet made
-        let date = streamTime.toFormat("M-d");
+        let date = streamTime.format("M-D");
         let dayContainer = $(`#${date}`);
         if (!dayContainer.length) {
             // create day container
             dayContainer = dayTemplate.clone();
             dayContainer.attr("id", date);
-            let dayStr = `${streamTime.toFormat("M/d")} - ${days[(streamTime.toFormat("E")) % 7]}`;
+            let dayStr = `${streamTime.format("M/D")} - ${days[(streamTime.day()) % 7]}`;
             dayContainer.find(".dayHeader")
                 .html(dayStr.replace(" - ", "<br/>"))
                 .attr("title", dayStr);
@@ -149,11 +148,11 @@ function buildSchedule(streams) {
         // time
         let time = clickable.find(".streamTime")
         if (lang === "ja-jp") {
-            time.attr("title", streamTime.toFormat("HH:mm"));
-            timeStr = streamTime.toFormat("HH:mm ZZZZ");
+            time.attr("title", streamTime.format("HH:mm"));
+            timeStr = streamTime.format("HH:mm z");
         } else {
-            time.attr("title", streamTime.toFormat("h:mm a"));
-            timeStr = streamTime.toFormat("h:mm a ZZZZ");
+            time.attr("title", streamTime.format("h:mm A"));
+            timeStr = streamTime.format("h:mm A z");
         }
 
         time.text(timeStr);
