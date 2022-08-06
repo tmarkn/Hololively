@@ -81,7 +81,8 @@ def api(query = ''):
         "innk",
         "china",
         "indonesia",
-        "english"
+        "english",
+        "holostars_english"
     ]
     if query not in endpoints:
         response = app.response_class(
