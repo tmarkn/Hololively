@@ -20,14 +20,9 @@ If this site somehow infinges on your rights or some other problems occur, pleas
 
 # About Me
 
-My name is Tmarkn. I am a programmer who is a huge fan of Hololive and their talents.  You can find some of my social media links below.
+My name is Tmarkn. I am a programmer who is a huge fan of Hololive and their talents.  You can contact me below.
 
-- [Email](mailto:tmarknentertainment@gmail.com)
-- [Youtube](http://youtube.com/themrmarkn)
-- [Twitch](http://twitch.tv/tmarkn)
-- [Twitter](http://twitter.com/tmarkOfficial)
-- [Soundcloud](htttp://soundcloud.com/tmarkn)
-- [Instagram](http://instagram.com/tmarkn)
+- [Email](mailto:tmarkn@hololively.com)
 
 # Donations
 
