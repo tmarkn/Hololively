@@ -18,12 +18,12 @@ const res = [
 ]
 
 // variables
-const revMemberPhotos = swap(memberPhotos);
 const calendarContainer = $("#calendarContainer");
 const liveContainer = $("#liveContainer");
 const loadingContainer = $("#loadingContainer");
 const dayTemplate = $("#dayTemplate");
 const streamTemplate = $("#streamTemplate");
+let memberPhotos;
 let targetMinutes = 5;
 
 targetMinutes = targetMinutes * 60 * 1000;
@@ -36,6 +36,7 @@ if (query === null) {
 }
 
 $(document).ready(function () {
+    getMemberPhotos();
     buildSchedule(streams);
     setTimeout(function () {
         refresh(targetMinutes);
@@ -46,7 +47,22 @@ $(document).ready(function () {
     liveContainer.insertBefore(mobileButton);
 });
 
-function refresh(targetMinutes) {
+function getMemberPhotos() {
+    // update data
+    $.ajax({
+        url: "/photos/",
+        type: "GET",
+        dataType: "json",
+        cache: true,
+        async: false,
+        success: function (data) {
+            memberPhotos = data;
+        }
+    });
+}
+
+function refresh(refreshTime) {
+    let rTime = refreshTime | 30000 // 5 * 60 * 1000;
     // update data
     $.ajax({
         url: "/api/" + query,
@@ -63,8 +79,8 @@ function refresh(targetMinutes) {
         }
     });
     setTimeout(function () {
-        refresh(targetMinutes);
-    }, targetMinutes);
+        refresh(rTime);
+    }, rTime);
 }
 
 // image does not exist
@@ -107,6 +123,18 @@ function buildSchedule(streams) {
             streamTime = moment(stream.time).tz(tz);
         }
 
+        // for upcoming
+        if (typeof upcoming !== 'undefined' && upcoming === true) {
+            if (!stream.live) {
+                let bufferedStreamTime = streamTime.add(15, 'minutes');
+                let current = moment();
+    
+                if (current.isAfter(bufferedStreamTime)) {
+                    return
+                }
+            }
+        }   
+
         // find day container
         // create day container if not yet made
         let date = streamTime.format("M-D");
@@ -139,7 +167,7 @@ function buildSchedule(streams) {
 
         // avatar
         clickable.find(".avatar")
-            .attr("src", revMemberPhotos[stream.collaborators[0]])
+            .attr("src", memberPhotos[stream.collaborators[0]])
 
         // name
         clickable.find(".mName")
@@ -189,7 +217,6 @@ function buildSchedule(streams) {
         let collabContainer = clickable.find(".collabContainer");
 
         if (collaborators.length > 1) {
-            // calculate number of containers
             let numCollaborators = collaborators.length;
             let numContainers = Math.ceil(collaborators.length / 12);
             let index = 0;
@@ -223,12 +250,9 @@ function buildSchedule(streams) {
                             else if (splits[0] == 'Aki') {
                                 enName = splits[0];
                             }
-                            // regular case
                             else if (splits.length > 1) {
                                 enName = splits[1];
-                            } 
-                            // no surname
-                            else {
+                            } else {
                                 enName = splits[0];
                             }
                     }
@@ -237,15 +261,16 @@ function buildSchedule(streams) {
                     let collabor = $("#collabTemplate").clone();
 
                     // format image link with highest quality image
-                    let collabImage = revMemberPhotos[collaborator];
-                    let indexOfEquals = collabImage.lastIndexOf("=");
-                    if (indexOfEquals !== -1) {
-                        collabImage = collabImage.slice(0, indexOfEquals) + '=s800-c-k-c0x00ffffff-no-rj';
+                    if (hasValue(memberPhotos, collaborator)) {
+                        let collabImage = memberPhotos[collaborator];
+                        let indexOfEquals = collabImage.lastIndexOf("=");
+                        if (indexOfEquals !== -1) {
+                            collabImage = collabImage.slice(0, indexOfEquals) + '=s800-c-k-c0x00ffffff-no-rj';
+                        }
+                        collabor.attr("src", collabImage);
                     }
-
                     // append each collaborator
-                    collabor.attr("src", collabImage)
-                        .attr("title", collaborator)
+                    collabor.attr("title", collaborator)
                         .addClass(enName)
                         .css("grid-column", `${j * 3 + 1}/${j * 3 + 5}`);
                     collabor.appendTo(newCollabContainer);
@@ -346,4 +371,16 @@ function imageExists(url, callback) {
     };
     img.onerror = function () { callback(false, url) };
     img.src = url;
+}
+
+function hasValue(json, value) {
+    // get key values
+    const keys = Object.keys(json)
+    // check key for value
+    for (let index = 0; index < keys.length; ++index) {
+        if(value === keys[index]){
+          return true;
+        }
+    }
+    return false
 }

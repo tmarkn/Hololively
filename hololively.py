@@ -1,13 +1,20 @@
+from sqlite3 import connect
 import markdown
+import mysql.connector
 import os
 import requests
 from api import API
+from mostRecentPictures import getMostRecentPicture
 from datetime import datetime, timezone
 from dotenv import load_dotenv
 from flask import Flask, render_template, url_for, request, make_response
 
 load_dotenv()
 GA_MEASUREMENT_ID = os.getenv("GA_MEASUREMENT_ID")
+DATABASE_USERNAME = os.getenv("DATABASE_USERNAME")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
+DATABASE_HOST = os.getenv("DATABASE_HOST")
+DATABASE_NAME = os.getenv("DATABASE_NAME")
 
 def track_api(userAgent=None):
     data = {
@@ -29,8 +36,16 @@ def track_api(userAgent=None):
 app = Flask(__name__, static_url_path='/static')
 timestamp = datetime.now(timezone.utc)
 
-with open('static/json/memberPhotos.json', 'r', encoding="utf-8") as f:
-    memberPhotos = f.read()
+def connectToDb():
+    return mysql.connector.connect(
+        host = DATABASE_HOST,
+        user = DATABASE_USERNAME,
+        passwd = DATABASE_PASSWORD,
+        db = DATABASE_NAME
+    )
+
+# with open('static/json/memberPhotos.json', 'r', encoding="utf-8") as f:
+#     memberPhotos = f.read()
 with open('about.md', 'r', encoding="utf-8") as f:
     aboutText = f.read()
 with open('README.md', 'r', encoding="utf-8") as f:
@@ -43,17 +58,24 @@ with open('faq.md', 'r', encoding="utf-8") as f:
 @app.route('/')
 @app.route('/home/')
 def home():
+    
     query = request.args.get('q')
     if not query:
         query = ''
-    return render_template('calendar.html', GA_MEASUREMENT_ID=GA_MEASUREMENT_ID, streams=API(query=query), memberPhotos=memberPhotos)
+    db = connectToDb()
+    streams = API(query=query, db=db)
+    db.close()
+    return render_template('calendar.html', GA_MEASUREMENT_ID=GA_MEASUREMENT_ID, streams=streams, upcoming='false')
 
 @app.route('/upcoming/')
 def active():
     query = request.args.get('q')
     if not query:
         query = ''
-    return render_template('upcoming.html', GA_MEASUREMENT_ID=GA_MEASUREMENT_ID, streams=API(query=query), memberPhotos=memberPhotos)
+    db = connectToDb()
+    streams = API(query=query, db=db)
+    db.close()
+    return render_template('calendar.html', GA_MEASUREMENT_ID=GA_MEASUREMENT_ID, streams=streams, upcoming='true')
 
 @app.route('/about/')
 @app.route('/policy/')
@@ -84,6 +106,7 @@ def api(query = ''):
         "english",
         "holostars_english"
     ]
+    db = connectToDb()
     if query not in endpoints:
         response = app.response_class(
             status = 400,
@@ -101,9 +124,10 @@ def api(query = ''):
             response = '{' +
                 '"status": 200, ' +
                 f'"timestamp": "{datetime.now(timezone.utc).isoformat()}",' + 
-                f'"streams": {API(query=query)}' +
+                f'"streams": {API(query=query, db=db)}' +
             '}'
         )
+    db.close()
     return response
 
 @app.route('/docs/')
@@ -120,6 +144,13 @@ def settings():
         title='Settings', 
         GA_MEASUREMENT_ID=GA_MEASUREMENT_ID
     )
+
+@app.route('/photos/')
+def photos():
+    db = connectToDb()
+    photosJson = getMostRecentPicture(db.cursor())
+    db.close()
+    return photosJson
 
 @app.errorhandler(404)
 def page_not_found(error):

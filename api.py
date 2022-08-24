@@ -1,16 +1,32 @@
 import datetime
 import json
+import mysql.connector
+import os
 import re
+import warnings
+import sys
 from bs4 import BeautifulSoup as bs
 from dateutil import tz
+from dotenv import load_dotenv
 from urllib.request import urlopen
 
 from json_serial import json_serial
 
 from_zone = tz.gettz('Asia/Tokyo')
 
-with open('static/json/memberPhotos.json', 'r', encoding='utf-8') as f:
-    members = json.load(f)
+load_dotenv()
+DATABASE_USERNAME = os.getenv("DATABASE_USERNAME")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
+DATABASE_HOST = os.getenv("DATABASE_HOST")
+DATABASE_NAME = os.getenv("DATABASE_NAME")
+
+try:
+    with open('static/json/memberPhotos.json', 'r', encoding='utf-8') as f:
+        members = json.load(f)
+        useLocalFile = True
+except:
+    warnings.warn('No memberPhotos.json found: Assuming SQL database connection')
+    useLocalFile = False
 
 class Stream:
     def __init__(self, link, host, time, thumbnail, collaborators = [], live = False):
@@ -21,7 +37,23 @@ class Stream:
         self.collaborators = collaborators
         self.live = live
 
-def API(query):
+def API(query, db = None):
+    if not useLocalFile and db == None:
+        raise sys.exit('No memberPhotos.JSON or Database Connection provided')
+    elif not useLocalFile and db:
+        cursor = db.cursor()
+        q = """
+            SELECT member_name, photo_url FROM member_photos  t1
+            WHERE t1.time_added = 
+                (SELECT max(time_added) FROM member_photos t2 WHERE t2.member_name = t1.member_name);
+        """
+        cursor.execute(q)
+        newResults = cursor.fetchall()
+
+        members = {}
+        for result in newResults:
+            members[result[1]] = result[0]
+
     url = 'https://schedule.hololive.tv/lives/' + query
 
     text = urlopen(url).read()
@@ -103,4 +135,11 @@ def API(query):
     return json.dumps([x.__dict__ for x in data], default=json_serial, ensure_ascii=False)
 
 if __name__ == '__main__':
-    print(API(''))
+    db = mysql.connector.connect(
+        host = DATABASE_HOST,
+        user = DATABASE_USERNAME,
+        passwd = DATABASE_PASSWORD,
+        db = DATABASE_NAME
+    )
+    print(API('', db))
+    db.close()

@@ -29,8 +29,8 @@
     </div>
     <img id="collabTemplate" class="collabImg" loading="lazy">
     <script>
-        let streams = JSON.parse({{ streams | tojson | safe}});
-        let memberPhotos = JSON.parse({{ memberPhotos | tojson | safe}});
+        let streams = JSON.parse({{ streams | tojson | safe }});
+        const upcoming = {{upcoming}};
     </script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/calendar.js') }}"></script>
 {% endblock content %}
