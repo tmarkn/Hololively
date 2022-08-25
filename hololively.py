@@ -1,6 +1,6 @@
 from sqlite3 import connect
 import markdown
-import mysql.connector
+import psycopg2
 import os
 import requests
 from api import API
@@ -37,7 +37,7 @@ app = Flask(__name__, static_url_path='/static')
 timestamp = datetime.now(timezone.utc)
 
 def connectToDb():
-    return mysql.connector.connect(
+    return psycopg2.connect(
         host = DATABASE_HOST,
         user = DATABASE_USERNAME,
         passwd = DATABASE_PASSWORD,

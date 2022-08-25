@@ -1,5 +1,5 @@
 import json
-import mysql.connector
+import psycopg2
 import os
 from dotenv import load_dotenv
 
@@ -26,11 +26,11 @@ if __name__ == "__main__":
     DATABASE_HOST = os.getenv("DATABASE_HOST")
     DATABASE_NAME = os.getenv("DATABASE_NAME")
 
-    with mysql.connector.connect(
+    with psycopg2.connect(
         host = DATABASE_HOST,
         user = DATABASE_USERNAME,
-        passwd = DATABASE_PASSWORD,
-        db = DATABASE_NAME
+        password = DATABASE_PASSWORD,
+        database = DATABASE_NAME
     ) as db:
         dbCur = db.cursor()
         print(getMostRecentPicture(dbCur))

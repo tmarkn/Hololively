@@ -1,7 +1,7 @@
 import datetime
 import json
-import mysql.connector
 import os
+import psycopg2
 import re
 import warnings
 import sys
@@ -135,11 +135,11 @@ def API(query, db = None):
     return json.dumps([x.__dict__ for x in data], default=json_serial, ensure_ascii=False)
 
 if __name__ == '__main__':
-    db = mysql.connector.connect(
+    db = psycopg2.connect(
         host = DATABASE_HOST,
         user = DATABASE_USERNAME,
-        passwd = DATABASE_PASSWORD,
-        db = DATABASE_NAME
+        password = DATABASE_PASSWORD,
+        database = DATABASE_NAME
     )
     print(API('', db))
     db.close()
