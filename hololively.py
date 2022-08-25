@@ -40,8 +40,8 @@ def connectToDb():
     return psycopg2.connect(
         host = DATABASE_HOST,
         user = DATABASE_USERNAME,
-        passwd = DATABASE_PASSWORD,
-        db = DATABASE_NAME
+        password = DATABASE_PASSWORD,
+        database = DATABASE_NAME
     )
 
 # with open('static/json/memberPhotos.json', 'r', encoding="utf-8") as f:
