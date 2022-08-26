@@ -1,4 +1,4 @@
-from sqlite3 import connect
+import git
 import markdown
 import psycopg2
 import os
@@ -173,6 +173,15 @@ def sitemap():
         return response
     except Exception as e:
         return(str(e))	  
+
+@app.route('/git_update', methods=['POST'])
+def git_update():
+    repo = git.Repo('./hololively')
+    origin = repo.remotes.origin
+    repo.create_head('pa',
+        origin.refs.pa).set_tracking_branch(origin.refs.pa).checkout()
+    origin.pull()
+    return '', 200    
 
 if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True
