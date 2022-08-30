@@ -1,6 +1,6 @@
 import git
 import markdown
-import psycopg2
+import mysql.connector
 import os
 import requests
 from api import API
@@ -37,11 +37,11 @@ app = Flask(__name__, static_url_path='/static')
 timestamp = datetime.now(timezone.utc)
 
 def connectToDb():
-    return psycopg2.connect(
+    return mysql.connector.connect(
         host = DATABASE_HOST,
         user = DATABASE_USERNAME,
-        password = DATABASE_PASSWORD,
-        database = DATABASE_NAME
+        passwd = DATABASE_PASSWORD,
+        db = DATABASE_NAME
     )
 
 # with open('static/json/memberPhotos.json', 'r', encoding="utf-8") as f:
