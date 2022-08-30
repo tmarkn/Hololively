@@ -1,4 +1,3 @@
-import git
 import markdown
 import mysql.connector
 import os
