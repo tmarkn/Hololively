@@ -100,7 +100,7 @@ def about():
 @app.route('/api/')
 @app.route('/api/<query>')
 @app.route('/api/<query>/')
-@cache.cached(timeout=50)
+@cache.cached(timeout=300)
 def api(query = ''):
     response = track_api(request.headers.get('User-Agent'))
     if not response.ok:
