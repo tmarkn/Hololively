@@ -16,6 +16,8 @@ The results can be filtered by appending one of the filters below to the end.
 
 `eg. http://hololively.com/api/english`
 
+The results are cached for five minutes at a time per page. If you need more frequent updates, please download and host the API yourself.
+
 # Filters
 - hololive
 - holostars

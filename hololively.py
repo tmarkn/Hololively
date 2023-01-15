@@ -8,6 +8,7 @@ from mostRecentPictures import getMostRecentPicture
 from datetime import datetime, timezone
 from dotenv import load_dotenv
 from flask import Flask, render_template, url_for, request, make_response
+from flask_caching import Cache
 
 load_dotenv()
 GA_MEASUREMENT_ID = os.getenv("GA_MEASUREMENT_ID")
@@ -33,7 +34,14 @@ def track_api(userAgent=None):
 
     return response
 
+config = {
+    "CACHE_TYPE": "SimpleCache",  # Flask-Caching related configs
+    "CACHE_DEFAULT_TIMEOUT": 300
+}
+
 app = Flask(__name__, static_url_path='/static')
+app.config.from_mapping(config)
+cache = Cache(app)
 timestamp = datetime.now(timezone.utc)
 
 def connectToDb():
@@ -92,6 +100,7 @@ def about():
 @app.route('/api/')
 @app.route('/api/<query>')
 @app.route('/api/<query>/')
+@cache.cached(timeout=50)
 def api(query = ''):
     response = track_api(request.headers.get('User-Agent'))
     if not response.ok:
